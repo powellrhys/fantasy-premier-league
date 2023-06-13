@@ -10,7 +10,7 @@ st.set_page_config(
 
 player_data_df = read_csv('data/players.csv')
 
-st.markdown("# Player Analyis")
+st.markdown("# Player Value Analyis")
 
 position_filter = st.multiselect(
     'Position',
