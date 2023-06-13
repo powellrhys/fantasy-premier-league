@@ -10,6 +10,12 @@ import os
 warnings.filterwarnings("ignore")
 load_dotenv()
 
+if not os.path.exists('data'):
+   os.makedirs('data')
+
+if not os.path.exists('data_leagues'):
+   os.makedirs('data_leagues')
+
 collect_fixture_data()
 collect_player_data()
 

@@ -12,4 +12,4 @@ def collect_league_data(league_id):
 
     df = pd.DataFrame(json['standings']['results'])
 
-    df.to_csv(f'data_league/{league_name}.csv')
+    df.to_csv(f'data_leagues/{league_name}.csv')
