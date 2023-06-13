@@ -1,7 +1,7 @@
-from functions.fixtures import collect_fixture_data
-from functions.players import collect_player_data
-from functions.league import collect_league_data
-from functions.manager import collect_manager_data
+from pages.functions.fixtures import collect_fixture_data
+from pages.functions.players import collect_player_data
+from pages.functions.league import collect_league_data
+from pages.functions.manager import collect_manager_data
 
 from dotenv import load_dotenv
 import warnings

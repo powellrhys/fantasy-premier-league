@@ -32,3 +32,19 @@ def plot_minutes_to_points(df):
                     })
     
     return fig
+
+def plot_popularity_to_points(df):
+
+    fig = px.scatter(df, x='selected_by_percent', 
+                    y='total_points', 
+                    color='position', 
+                    hover_data='second_name', 
+                    trendline='ols',
+                    labels={
+                        "selected_by_percent" : "Selected By (%)",
+                        "total_points" : "Total Points",
+                        "position" : "Position",
+                        "second_name" : "Name"
+                    })
+    
+    return fig

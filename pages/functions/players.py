@@ -16,6 +16,7 @@ def collect_player_data():
     slim_elements_df['position'] = slim_elements_df.element_type.map(elements_types_df.set_index('id').singular_name)
     slim_elements_df['team'] = slim_elements_df.team.map(teams_df.set_index('id').name)
     slim_elements_df['value'] = slim_elements_df.value_season.astype(float)
+    slim_elements_df['now_cost'] = slim_elements_df['now_cost'].div(10)
 
     slim_elements_df = slim_elements_df[['second_name','team','position','selected_by_percent','now_cost','minutes','transfers_in','value_season','total_points']]
 
