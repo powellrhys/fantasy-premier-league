@@ -12,7 +12,7 @@ player_data_df = read_csv('data/players.csv')
 
 st.markdown("# Player Value Analyis")
 
-position_filter = position_filter_object()
+position_filter = position_filter_object('position', ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
 
 budget_filter = st.slider(label='Budget',
                           min_value=0.0, 

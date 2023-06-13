@@ -20,11 +20,13 @@ def summarise_manager_data(path):
 
     return team_name, region, gameweek_points, overall_points, overall_rank
 
-def position_filter_object():
+def position_filter_object(key, default):
 
     position_filter = st.multiselect(
         'Position',
         ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
-        ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
+        default=default,
+        key=key
+        )
     
     return position_filter
