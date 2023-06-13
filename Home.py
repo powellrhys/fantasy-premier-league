@@ -1,4 +1,4 @@
-from functions.support_functions import summarise_manager_data
+from pages.functions.support_functions import summarise_manager_data
 
 import streamlit as st
 
