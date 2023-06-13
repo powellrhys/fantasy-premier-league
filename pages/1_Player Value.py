@@ -1,10 +1,10 @@
 import streamlit as st
 
-from pages.functions.support_functions import read_csv
+from pages.functions.support_functions import read_csv, position_filter_object
 from pages.functions.plots import plot_cost_to_points, plot_minutes_to_points, plot_popularity_to_points
 
 st.set_page_config(
-    page_title="Player Analysis",
+    page_title="Player Value Analysis",
     page_icon=":soccer:",
 )
 
@@ -12,10 +12,7 @@ player_data_df = read_csv('data/players.csv')
 
 st.markdown("# Player Value Analyis")
 
-position_filter = st.multiselect(
-    'Position',
-    ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
-    ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
+position_filter = position_filter_object()
 
 budget_filter = st.slider(label='Budget',
                           min_value=0.0, 

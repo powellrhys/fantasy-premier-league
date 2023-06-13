@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 
 def read_csv(path):
 
@@ -18,3 +19,12 @@ def summarise_manager_data(path):
     overall_rank = df.loc[df['Key'] == 'summary_overall_rank', 'Value'].values[0]
 
     return team_name, region, gameweek_points, overall_points, overall_rank
+
+def position_filter_object():
+
+    position_filter = st.multiselect(
+        'Position',
+        ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
+        ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
+    
+    return position_filter

@@ -3,7 +3,8 @@ import plotly.express as px
 
 def plot_cost_to_points(df):
 
-    fig = px.scatter(df, x='now_cost', 
+    fig = px.scatter(df, 
+                    x='now_cost', 
                     y='total_points', 
                     color='position', 
                     hover_data='second_name', 
@@ -19,7 +20,8 @@ def plot_cost_to_points(df):
 
 def plot_minutes_to_points(df):
 
-    fig = px.scatter(df, x='minutes', 
+    fig = px.scatter(df, 
+                    x='minutes', 
                     y='total_points', 
                     color='position', 
                     hover_data='second_name', 
@@ -35,7 +37,8 @@ def plot_minutes_to_points(df):
 
 def plot_popularity_to_points(df):
 
-    fig = px.scatter(df, x='selected_by_percent', 
+    fig = px.scatter(df, 
+                    x='selected_by_percent', 
                     y='total_points', 
                     color='position', 
                     hover_data='second_name', 
@@ -47,4 +50,18 @@ def plot_popularity_to_points(df):
                         "second_name" : "Name"
                     })
     
+    return fig
+
+def plot_points_per_team(df):
+    fig = px.bar(df, 
+                x='team', 
+                y='total_points',
+                color='position',
+                labels={
+                    "team" : "Team",
+                    "total_points" : "Total Points",
+                    "position" : "Position"
+                })
+    fig.update_layout(xaxis = {"categoryorder":"total descending"})
+
     return fig
