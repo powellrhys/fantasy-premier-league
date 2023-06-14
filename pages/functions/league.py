@@ -52,6 +52,7 @@ def collect_league_data(league_id):
     chip_df = create_league_chip_dataframe(df)
 
     df = df.join(chip_df, lsuffix='entry', rsuffix='entry')
-    df['total_chips'] =  df['Bench Boost'] + df['Free Hit'] + df['Triple Captain']
 
     df.to_csv(f'data_leagues/{league_name}.csv')
+
+    return json['league']['name']

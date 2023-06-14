@@ -4,6 +4,7 @@ from pages.functions.league import collect_league_data
 from pages.functions.manager import collect_manager_data
 
 from dotenv import load_dotenv
+import pandas as pd
 import warnings
 import os
 
@@ -25,8 +26,14 @@ def update_data():
    collect_manager_data(manager_id)
 
    league_ids = os.getenv('leagues').replace(' ', '').split(',')
+   leagues = []
    for league_id in league_ids:
-      collect_league_data(league_id)
+      league_name = collect_league_data(league_id)
+
+      leagues.append(league_name)
+      leagues_df = pd.Series(leagues)
+
+      leagues_df.to_csv('data_leagues/list_of_leagues.csv')
 
 if __name__ == "__main__":
    update_data()

@@ -30,7 +30,7 @@ def plot_bar_chips_used(df):
 
     return fig
 
-def plot_points_per_team(df, order):
+def plot_points_per_team(df):
     fig = px.bar(df, 
                 x='team', 
                 y='total_points',
