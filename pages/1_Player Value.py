@@ -1,4 +1,5 @@
 from pages.functions.support_functions import read_csv
+from pages.functions.ui_components import position_checkbox
 from pages.functions.plots import \
     plot_scatter_player_points, \
     plot_player_points_bar
@@ -15,15 +16,7 @@ player_data_df = read_csv('data/players.csv')
 
 st.markdown("# Player Value Analyis")
 
-filter_list = np.array(['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
-
-goal_check = st.sidebar.checkbox('Goalkeeper', value=True)
-def_check = st.sidebar.checkbox('Defender', value=True)
-mid_check = st.sidebar.checkbox('Midfielder', value=True)
-fow_check = st.sidebar.checkbox('Forward', value=True)
- 
-filter_index= np.array([goal_check, def_check, mid_check, fow_check])
-position_filter = filter_list[filter_index]
+position_filter = position_checkbox('player_value_page')
 
 budget_filter = st.sidebar.slider(label='Budget',
                           min_value=0.0, 

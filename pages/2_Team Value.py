@@ -1,8 +1,9 @@
 import streamlit as st
 import numpy as np
 
-from pages.functions.support_functions import read_csv, position_filter_object
-from pages.functions.plots import plot_points_per_team, plot_player_points_bar
+from pages.functions.support_functions import read_csv
+from pages.functions.plots import plot_points_per_team
+from pages.functions.ui_components import position_checkbox
 
 st.set_page_config(
     page_title="Player Value Analysis",
@@ -13,17 +14,7 @@ player_data_df = read_csv('data/players.csv')
 
 st.markdown("# Team Value Analyis")
 
-# team_position_filter = position_filter_object('team', ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
-
-filter_list = np.array(['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
-
-goal_check = st.sidebar.checkbox('Goalkeeper', value=True)
-def_check = st.sidebar.checkbox('Defender', value=True)
-mid_check = st.sidebar.checkbox('Midfielder', value=True)
-fow_check = st.sidebar.checkbox('Forward', value=True)
- 
-filter_index= np.array([goal_check, def_check, mid_check, fow_check])
-position_filter = filter_list[filter_index]
+position_filter = position_checkbox('player_value_page')
 
 team_data_df = player_data_df.groupby(by=['team', 'position']).sum()
 team_data_df.reset_index(inplace=True)

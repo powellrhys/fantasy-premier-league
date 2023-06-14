@@ -19,14 +19,3 @@ def summarise_manager_data(path):
     overall_rank = df.loc[df['Key'] == 'summary_overall_rank', 'Value'].values[0]
 
     return team_name, region, gameweek_points, overall_points, overall_rank
-
-def position_filter_object(key, default):
-
-    position_filter = st.multiselect(
-        'Position',
-        ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
-        default=default,
-        key=key
-        )
-    
-    return position_filter
