@@ -17,7 +17,20 @@ def plot_scatter_player_points(df, x, xlabel):
     
     return fig
 
-def plot_points_per_team(df):
+def plot_bar_chips_used(df):
+    fig = px.bar(df, 
+                x='player_name', 
+                y='value',
+                color='variable',
+                labels={
+                    "player_name" : "Name",
+                    "value" : "Chips Played",
+                    "variable" : 'Chips'
+                })
+
+    return fig
+
+def plot_points_per_team(df, order):
     fig = px.bar(df, 
                 x='team', 
                 y='total_points',
