@@ -1,9 +1,11 @@
-import streamlit as st
-import numpy as np
-
 from pages.functions.support_functions import read_csv
 from pages.functions.plots import plot_points_per_team
 from pages.functions.ui_components import position_checkbox
+
+import streamlit as st
+import numpy as np
+
+
 
 st.set_page_config(
     page_title="Player Value Analysis",
