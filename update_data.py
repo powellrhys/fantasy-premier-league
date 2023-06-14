@@ -7,21 +7,26 @@ from dotenv import load_dotenv
 import warnings
 import os
 
-warnings.filterwarnings("ignore")
-load_dotenv()
+def update_data():
 
-if not os.path.exists('data'):
-   os.makedirs('data')
+   warnings.filterwarnings("ignore")
+   load_dotenv()
 
-if not os.path.exists('data_leagues'):
-   os.makedirs('data_leagues')
+   if not os.path.exists('data'):
+      os.makedirs('data')
 
-collect_fixture_data()
-collect_player_data()
+   if not os.path.exists('data_leagues'):
+      os.makedirs('data_leagues')
 
-manager_id = os.getenv('manager_id')
-collect_manager_data(manager_id)
+   collect_fixture_data()
+   collect_player_data()
 
-league_ids = os.getenv('leagues').replace(' ', '').split(',')
-for league_id in league_ids:
-    collect_league_data(league_id)
+   manager_id = os.getenv('manager_id')
+   collect_manager_data(manager_id)
+
+   league_ids = os.getenv('leagues').replace(' ', '').split(',')
+   for league_id in league_ids:
+      collect_league_data(league_id)
+
+if __name__ == "__main__":
+   update_data()
