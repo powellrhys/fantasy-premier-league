@@ -1,12 +1,31 @@
 from pages.functions.fixtures import collect_fixture_data
-from pages.functions.players import collect_player_data
+from pages.functions.players import \
+   collect_player_data, \
+   collect_unique_player_data
 from pages.functions.league import collect_league_data
 from pages.functions.manager import collect_manager_data
+from pages.functions.support_functions import read_csv
 
 from dotenv import load_dotenv
 import pandas as pd
 import warnings
 import os
+
+def update_my_team_data():
+
+   if not os.path.exists('data_my_players'):
+      os.makedirs('data_my_players')
+
+   current_file_names = os.listdir('data_my_players')
+   for file in current_file_names:
+      os.remove(f'data_my_players/{file}')
+
+   player_data_df = read_csv('data/players.csv')
+   current_team = read_csv('data/my_team.csv')['0'].to_list()
+
+   for player_name in current_team:
+      player_id = player_data_df[player_data_df['second_name'] == player_name]['id'].to_list()[0]
+      collect_unique_player_data(player_id, player_name)
 
 def update_data():
 
@@ -37,3 +56,4 @@ def update_data():
 
 if __name__ == "__main__":
    update_data()
+   update_my_team_data()

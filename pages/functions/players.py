@@ -21,3 +21,13 @@ def collect_player_data():
     slim_elements_df = slim_elements_df[['id','second_name','team','position','selected_by_percent','now_cost','minutes','transfers_in','value_season','total_points']]
 
     slim_elements_df.to_csv('data/players.csv')
+
+def collect_unique_player_data(player_id, player_name):
+
+    url = f'https://fantasy.premierleague.com/api/element-summary/{player_id}/'
+    r = requests.get(url)
+    json = r.json()
+
+    player_data_df = pd.DataFrame(json['history'])
+
+    player_data_df.to_csv(f'data_my_players/{player_name}.csv')
