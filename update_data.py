@@ -25,7 +25,7 @@ def update_my_team_data():
 
    for player_name in current_team:
       player_id = player_data_df[player_data_df['second_name'] == player_name]['id'].to_list()[0]
-      collect_unique_player_data(player_id, player_name)
+      collect_unique_player_data(player_id, player_name, 'data_my_players')
 
 def update_data():
 
@@ -54,6 +54,20 @@ def update_data():
 
       leagues_df.to_csv('data_leagues/list_of_leagues.csv')
 
+def update_all_player_data():
+   
+   if not os.path.exists('data_all_players'):
+      os.makedirs('data_all_players')
+
+   player_data_df = read_csv('data/players.csv')
+   all_player_names = player_data_df['second_name'].to_list()
+
+   for player_name in all_player_names:
+      player_id = player_data_df[player_data_df['second_name'] == player_name]['id'].to_list()[0]
+      collect_unique_player_data(player_id, player_name, 'data_all_players')
+
+
 if __name__ == "__main__":
    update_data()
    update_my_team_data()
+   update_all_player_data()
