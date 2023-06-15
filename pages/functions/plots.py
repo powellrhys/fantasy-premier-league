@@ -67,6 +67,7 @@ def plot_line_my_team_stats(df, players, variable_label):
     fig = px.line(df, 
                   x="round", 
                   y=players,
+                  markers=True,
                   labels={
                     "round" : "Gameweek",
                     "variable" : "Player",
