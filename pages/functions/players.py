@@ -26,6 +26,8 @@ def collect_player_data():
     slim_elements_df['value'] = slim_elements_df.value_season.astype(float)
     slim_elements_df['now_cost'] = slim_elements_df['now_cost'].div(10)
 
+    player_stats_of_interest.append('position')
+
     slim_elements_df = slim_elements_df[player_stats_of_interest]
 
     slim_elements_df.to_csv('data/players.csv')

@@ -10,6 +10,7 @@ st.set_page_config(
     page_title="Chip Analysis",
     page_icon=":soccer:",
 ) 
+
 team_name, _, _, _, _ = summarise_manager_data('data/manager_summary.csv')  
 
 st.title(f'{team_name} Analysis')
