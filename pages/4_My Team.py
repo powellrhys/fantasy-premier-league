@@ -4,6 +4,7 @@ import pandas as pd
 from pages.functions.support_functions import \
     read_csv, \
     find_player_index_in_list
+from update_data import update_my_team_data
 
 st.set_page_config(
     page_title="Chip Analysis",
@@ -89,4 +90,4 @@ with button1:
 with button2:
     if st.button('Collected Team Data'):
         with st.spinner('Collecting Data...'):
-            my_team_df.to_csv('data/my_team.csv')
+            update_my_team_data()
