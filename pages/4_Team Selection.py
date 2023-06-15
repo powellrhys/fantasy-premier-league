@@ -21,7 +21,7 @@ forward_names = player_data_df[player_data_df['position'] == 'Forward']['second_
 
 index = find_player_index_in_list(current_team, goal_keeper_names, defender_names, midfielder_names, forward_names)
 
-st.markdown("# Update Team")
+st.markdown("# Team Selection")
 
 gk0, gk1, gk2, gk3= st.columns([1,2,2,1])
 
