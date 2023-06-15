@@ -24,31 +24,31 @@ with tab1:
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
-    defender_df_saves = defender_df.sort_values(by=['goals_conceded'], ascending=False).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'goals_conceded', 'Goals Conceded')
+    defender_df_gc = defender_df.sort_values(by=['goals_conceded'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_gc, 'goals_conceded', 'Goals Conceded')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab3:
-    defender_df_saves = defender_df.sort_values(by=['goals_scored'], ascending=False).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'goals_scored', 'Goals')
+    defender_df_gs = defender_df.sort_values(by=['goals_scored'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_gs, 'goals_scored', 'Goals')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab4:
-    defender_df_saves = defender_df.sort_values(by=['assists'], ascending=False).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'assists', 'Assists')
+    defender_df_a = defender_df.sort_values(by=['assists'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_a, 'assists', 'Assists')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
-    defender_df_saves = defender_df.sort_values(by=['starts'], ascending=False).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'starts', 'Starts')
+    defender_df_starts = defender_df.sort_values(by=['starts'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_starts, 'starts', 'Starts')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab6:
-    defender_df_saves = defender_df.sort_values(by=['yellow_cards'], ascending=True).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'yellow_cards', 'Yellow Cards')
+    defender_df_yc = defender_df.sort_values(by=['yellow_cards'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_yc, 'yellow_cards', 'Yellow Cards')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab7:
-    defender_df_saves = defender_df.sort_values(by=['red_cards'], ascending=True).head(15)
-    fig = plot_player_points_bar(defender_df_cs, 'red_cards', 'Red Cards')
+    defender_df_rc = defender_df.sort_values(by=['red_cards'], ascending=False).head(15)
+    fig = plot_player_points_bar(defender_df_rc, 'red_cards', 'Red Cards')
     st.plotly_chart(fig, use_container_width=True)

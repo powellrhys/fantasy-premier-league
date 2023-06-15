@@ -30,26 +30,26 @@ with tab2:
     st.plotly_chart(fig, use_container_width=True)
 
 with tab3:
-    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['starts'], ascending=False).head(15)
-    fig = plot_player_points_bar(goalkeeper_df_cs, 'starts', 'Starts')
+    goalkeeper_df_starts = goalkeeper_df.sort_values(by=['starts'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_starts, 'starts', 'Starts')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab4:
-    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['penalties_saved'], ascending=False).head(15)
-    fig = plot_player_points_bar(goalkeeper_df_cs, 'penalties_saved', 'Penalty Saves')
+    goalkeeper_df_ps = goalkeeper_df.sort_values(by=['penalties_saved'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_ps, 'penalties_saved', 'Penalty Saves')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
-    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['goals_conceded'], ascending=False).head(15)
-    fig = plot_player_points_bar(goalkeeper_df_cs, 'goals_conceded', 'Goal Conceded')
+    goalkeeper_df_gc = goalkeeper_df.sort_values(by=['goals_conceded'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_gc, 'goals_conceded', 'Goal Conceded')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab6:
-    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['yellow_cards'], ascending=True).head(15)
-    fig = plot_player_points_bar(goalkeeper_df_cs, 'yellow_cards', 'Yellow Cards')
+    goalkeeper_df_yc = goalkeeper_df.sort_values(by=['yellow_cards'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_yc, 'yellow_cards', 'Yellow Cards')
     st.plotly_chart(fig, use_container_width=True)
 
 with tab7:
-    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['red_cards'], ascending=True).head(15)
-    fig = plot_player_points_bar(goalkeeper_df_cs, 'red_cards', 'Red Cards')
+    goalkeeper_df_rc = goalkeeper_df.sort_values(by=['red_cards'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_rc, 'red_cards', 'Red Cards')
     st.plotly_chart(fig, use_container_width=True)
