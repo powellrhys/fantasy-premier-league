@@ -12,8 +12,9 @@ st.set_page_config(
 
 st.markdown("# Goalkeeper Analyis")
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Clean Sheets', 'Saves Made', 'No. Starts',
-                                              'Penalty Saves', 'Yellow Cards', 'Red Cards']) 
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['Clean Sheets', 'Saves Made', 'No. Starts',
+                                              'Penalty Saves', 'Goals Conceded', 'Yellow Cards',
+                                              'Red Cards']) 
 
 goalkeeper_df = read_csv('data/players.csv')
 goalkeeper_df = goalkeeper_df[goalkeeper_df['position'] == 'Goalkeeper']
@@ -39,11 +40,16 @@ with tab4:
     st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
+    goalkeeper_df_saves = goalkeeper_df.sort_values(by=['goals_conceded'], ascending=False).head(15)
+    fig = plot_player_points_bar(goalkeeper_df_cs, 'goals_conceded', 'Goal Conceded')
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab6:
     goalkeeper_df_saves = goalkeeper_df.sort_values(by=['yellow_cards'], ascending=True).head(15)
     fig = plot_player_points_bar(goalkeeper_df_cs, 'yellow_cards', 'Yellow Cards')
     st.plotly_chart(fig, use_container_width=True)
 
-with tab6:
+with tab7:
     goalkeeper_df_saves = goalkeeper_df.sort_values(by=['red_cards'], ascending=True).head(15)
     fig = plot_player_points_bar(goalkeeper_df_cs, 'red_cards', 'Red Cards')
     st.plotly_chart(fig, use_container_width=True)
