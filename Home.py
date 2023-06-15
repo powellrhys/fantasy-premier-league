@@ -1,5 +1,7 @@
 from pages.functions.support_functions import summarise_manager_data
-from update_data import update_data
+from update_data import \
+    update_data, \
+    update_my_team_data
 
 import streamlit as st
 
@@ -23,3 +25,4 @@ update_data_button = st.button('Update Data')
 if update_data_button:
     with st.spinner('Collecting Data...'):
         update_data()
+        update_my_team_data()

@@ -62,3 +62,16 @@ def plot_player_points_bar(df, y, y_label):
                     marker_line_width = 1)
 
     return fig
+
+def plot_line_my_team_stats(df, players, variable_label):
+    fig = px.line(df, 
+                  x="round", 
+                  y=players,
+                  labels={
+                    "round" : "Gameweek",
+                    "variable" : "Player",
+                    "value" : variable_label
+                }
+                 )
+    
+    return fig

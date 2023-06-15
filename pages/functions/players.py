@@ -1,5 +1,8 @@
 import requests
 import pandas as pd
+import os
+
+from pages.functions.support_functions import read_csv
 
 def collect_player_data():
 
@@ -31,3 +34,26 @@ def collect_unique_player_data(player_id, player_name):
     player_data_df = pd.DataFrame(json['history'])
 
     player_data_df.to_csv(f'data_my_players/{player_name}.csv')
+
+def create_gameweek_df_for_team(metric, gameweeks, player_filter):
+    current_file_names = os.listdir('data_my_players')
+
+    rounds_series = read_csv(f'data_my_players/{current_file_names[0]}')['round']
+
+    df = pd.DataFrame(rounds_series)
+
+    for file in current_file_names:
+        player_df = read_csv(f'data_my_players/{file}')
+        df[file.replace('.csv', '')] = player_df[metric]
+
+    players = df.columns.to_list()
+    players.pop(0)
+
+    columns = list(set(players) - set(player_filter))
+    columns = list(set(players) - set(columns))
+    columns.append('round')
+
+    df = df[columns]
+    df = df[(df['round'] >= gameweeks[0]) & (df['round'] <= gameweeks[1])]
+
+    return df, columns
