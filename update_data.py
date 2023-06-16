@@ -94,6 +94,15 @@ def update_premier_league_table():
       premier_league_table.loc[length] = row
 
    premier_league_table = premier_league_table[headers[:10]]
+   premier_league_table = premier_league_table.rename(
+      columns={"Played": "Pl",
+               "Won": "W",
+               "Drawn": "D",
+               "Lost": "L",
+               "Goals For": "GF",
+               "Goals Against": "GA",
+               "Goal Difference": "GD",
+               "Points" : "Pts"})
 
    premier_league_table.to_csv('data/premier_league_table.csv')
 
