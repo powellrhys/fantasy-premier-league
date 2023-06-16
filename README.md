@@ -1,1 +1,1 @@
-# fantasy_premier-league
+# fantasy-premier-league
