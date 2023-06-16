@@ -20,26 +20,3 @@ st.subheader(f'Team Region: :blue[{region}]')
 st.subheader(f'Latest Gameweek Points: :blue[{gameweek_points}]')
 st.subheader(f'Overall Points: :blue[{overall_points}]')
 st.subheader(f'Overall Ranking Name: :blue[{overall_rank}]')
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    update_data_button = st.button('Update General Data')
-
-    if update_data_button:
-        with st.spinner('Collecting Data...'):
-            update_data()
-
-with col2:
-    update_my_team_data_button = st.button('Update Team Data')
-
-    if update_my_team_data_button:
-        with st.spinner('Collecting Team Data...'):
-            update_my_team_data()    
-
-with col3:
-    update_all_player_data_button = st.button(f'Update All Player Data')
-
-    if update_all_player_data_button:
-        with st.spinner('Collecting All Player Data...'):
-            update_all_player_data()  
