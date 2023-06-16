@@ -1,14 +1,21 @@
-from pages.functions.fixtures import collect_fixture_data
+from pages.functions.support_functions import \
+   read_csv
+from pages.functions.fixtures import \
+   collect_fixture_data
 from pages.functions.players import \
    collect_player_data, \
    collect_unique_player_data
-from pages.functions.league import collect_league_data
-from pages.functions.manager import collect_manager_data
-from pages.functions.support_functions import read_csv
+from pages.functions.manager import \
+   collect_manager_data
+from pages.functions.league import \
+   collect_league_data
 
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+
 import pandas as pd
 import warnings
+import requests
 import os
 
 def update_my_team_data():
@@ -66,8 +73,32 @@ def update_all_player_data():
       player_id = player_data_df[player_data_df['second_name'] == player_name]['id'].to_list()[0]
       collect_unique_player_data(player_id, player_name, 'data_all_players')
 
+def update_premier_league_table():
+
+   url = 'https://www.bbc.co.uk/sport/football/premier-league/table'
+   page = requests.get(url)
+   soup = BeautifulSoup(page.text)
+
+   table1 = soup.find("table",{"class":"ssrcss-14j0ip6-Table e3bga5w5"})
+   headers = []
+   for i in table1.find_all('th'):
+      title = i.text
+      headers.append(title)
+
+   premier_league_table = pd.DataFrame(columns=headers)
+
+   for j in table1.find_all('tr')[1:]:
+      row_data = j.find_all('td')
+      row = [i.text for i in row_data]
+      length = len(premier_league_table)
+      premier_league_table.loc[length] = row
+
+   premier_league_table = premier_league_table[headers[:10]]
+
+   premier_league_table.to_csv('data/premier_league_table.csv')
 
 if __name__ == "__main__":
-   update_data()
-   update_my_team_data()
-   update_all_player_data()
+   update_premier_league_table()
+   # update_data()
+   # update_my_team_data()
+   # update_all_player_data()
