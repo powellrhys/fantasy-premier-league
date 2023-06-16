@@ -2,7 +2,8 @@ from pages.functions.support_functions import summarise_manager_data
 from update_data import \
     update_data, \
     update_my_team_data, \
-    update_all_player_data
+    update_all_player_data, \
+    update_premier_league_table
 
 import streamlit as st
 import datetime
@@ -51,6 +52,7 @@ if update_data_button:
 
             if general_data_toggle:
                 update_data()
+                update_premier_league_table()
                 json_read['general_data'] = ct
                 
             if my_team_toggle:

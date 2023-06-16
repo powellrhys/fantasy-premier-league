@@ -44,6 +44,25 @@ def plot_points_per_team(df):
 
     return fig
 
+
+def plot_bar_club_stats_bar(df, y, y_label):
+    fig = px.bar(df, 
+                x='Team', 
+                y=y,
+                text='Team',
+                color='Team',
+                color_discrete_map = team_colour_map,
+                labels={
+                    "Team" : "Team",
+                    y : y_label
+                })
+    fig.update_xaxes(categoryorder='total descending') 
+    fig.update_layout(showlegend=False)
+    fig.update_traces(marker_line_color = 'black',
+                    marker_line_width = 1)
+    
+    return fig
+
 def plot_player_points_bar(df, y, y_label):
     fig = px.bar(df, 
                 x='second_name', 
