@@ -1,3 +1,4 @@
+# Dictionary with main hexcode for each team
 team_colour_map = {'Arsenal': '#EF0107', 'Aston Villa': '#670E36', 'Brentford': '#e30613', 'Brighton': '#0057B8', 
 'Burnley': '#6C1D45', 'Chelsea': '#034694', 'Crystal Palace': '#1B458F', 'Everton': '#003399', 
 'Leicester': '#003090', 'Leeds': '#FFCD00', 'Liverpool': '#C8102E', 'Man City': '#6CABDD', 

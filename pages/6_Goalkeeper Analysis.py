@@ -1,24 +1,30 @@
-import streamlit as st
-
 from pages.functions.support_functions import \
     read_csv
 
-from pages.functions.plots import plot_player_points_bar
+from pages.functions.plots import \
+    plot_player_points_bar
 
+import streamlit as st
+
+# Configure page config
 st.set_page_config(
     page_title="Chip Analysis",
     page_icon=":soccer:",
 ) 
 
+# UI components
 st.markdown("# Goalkeeper Analyis")
 
+# Configure page tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['Clean Sheets', 'Saves Made', 'No. Starts',
                                               'Penalty Saves', 'Goals Conceded', 'Yellow Cards',
                                               'Red Cards']) 
 
+# Collect and filter data
 goalkeeper_df = read_csv('data/players.csv')
 goalkeeper_df = goalkeeper_df[goalkeeper_df['position'] == 'Goalkeeper']
 
+# Generate and render plots
 with tab1:
     goalkeeper_df_cs = goalkeeper_df.sort_values(by=['clean_sheets'], ascending=False).head(15)
     fig = plot_player_points_bar(goalkeeper_df_cs, 'clean_sheets', 'Clean Sheets')

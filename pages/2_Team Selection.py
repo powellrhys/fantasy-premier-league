@@ -4,25 +4,32 @@ import pandas as pd
 from pages.functions.support_functions import \
     read_csv, \
     find_player_index_in_list
-from update_data import update_my_team_data
+from update_data import \
+    update_my_team_data
 
+# Configure page config
 st.set_page_config(
     page_title="Chip Analysis",
     page_icon=":soccer:",
 )   
 
+# Read in player and user team data
 player_data_df = read_csv('data/players.csv')
 current_team = read_csv('data/my_team.csv')['0'].to_list()
 
+# Generate player name lists based on position 
 goal_keeper_names = player_data_df[player_data_df['position'] == 'Goalkeeper']['second_name'].to_list()
 defender_names = player_data_df[player_data_df['position'] == 'Defender']['second_name'].to_list()
 midfielder_names = player_data_df[player_data_df['position'] == 'Midfielder']['second_name'].to_list()
 forward_names = player_data_df[player_data_df['position'] == 'Forward']['second_name'].to_list()
 
+# Index player name list for default team visualisation
 index = find_player_index_in_list(current_team, goal_keeper_names, defender_names, midfielder_names, forward_names)
 
+# UI components
 st.markdown("# Team Selection")
 
+# Goalkeeper select boxes
 gk0, gk1, gk2, gk3= st.columns([1,2,2,1])
 
 with gk1:
@@ -31,6 +38,7 @@ with gk1:
 with gk2:
     gk2 = st.selectbox('Goalkeeper 2', tuple(goal_keeper_names),key='gk2', index=index[1])
 
+# Defender select boxes
 def1, def2, def3, def4, def5 = st.columns(5)
 
 with def1:
@@ -48,6 +56,7 @@ with def4:
 with def5:
     def5 = st.selectbox('Defender 5', tuple(defender_names), key='def5', index=index[6])
 
+# Midfielder select box
 mid1, mid2, mid3, mid4, mid5 = st.columns(5)
 
 with mid1:
@@ -65,6 +74,7 @@ with mid4:
 with mid5:
     mid5 = st.selectbox('Miplayer 5', tuple(midfielder_names), key='mid5', index=index[11])
 
+# Forward select box
 fow0, fow1, fow2, fow3, fow4 = st.columns([1,2,2,2,1])
 
 with fow1:
@@ -76,17 +86,20 @@ with fow2:
 with fow3:
     fow3 = st.selectbox('Forward 3', tuple(forward_names), key='fow3', index=index[14])
 
+# Collect select players from select boxes
 my_team = [gk1, gk2, def1, def2, def3, def4, def5, mid1, mid2, mid3, mid4, mid5, fow1, fow2, fow3]
 my_team_df = pd.Series(my_team)
 
 button0, button1, button2, button3 = st.columns([1,1,1,1])
 
+# Update list of players in current team
 with button1:
 
     if st.button('Update My Team'):
         with st.spinner('Collecting Data...'):
             my_team_df.to_csv('data/my_team.csv')
 
+# Collect data for current team selection
 with button2:
     if st.button('Collected Team Data'):
         with st.spinner('Collecting Data...'):

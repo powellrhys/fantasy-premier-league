@@ -1,6 +1,8 @@
-from pages.functions.colour_mapping import team_colour_map
+from pages.functions.colour_mapping import \
+    team_colour_map
 import plotly.express as px
 
+# Scatter plot - X variable against total points
 def plot_scatter_player_points(df, x, xlabel):
     fig = px.scatter(df, 
                     x=x, 
@@ -17,6 +19,7 @@ def plot_scatter_player_points(df, x, xlabel):
     
     return fig
 
+# Bar plot for chips used analysis
 def plot_bar_chips_used(df):
     fig = px.bar(df, 
                 x='player_name', 
@@ -30,6 +33,7 @@ def plot_bar_chips_used(df):
 
     return fig
 
+# Bar plot for points scored per team
 def plot_points_per_team(df):
     fig = px.bar(df, 
                 x='team', 
@@ -44,7 +48,7 @@ def plot_points_per_team(df):
 
     return fig
 
-
+# Bar plot - Club against various variables
 def plot_bar_club_stats_bar(df, y, y_label):
     fig = px.bar(df, 
                 x='Team', 
@@ -63,6 +67,7 @@ def plot_bar_club_stats_bar(df, y, y_label):
     
     return fig
 
+# Bar plot - Player against various variables
 def plot_player_points_bar(df, y, y_label):
     fig = px.bar(df, 
                 x='second_name', 
@@ -82,6 +87,7 @@ def plot_player_points_bar(df, y, y_label):
 
     return fig
 
+# Line plot - GW against various variables
 def plot_line_my_team_stats(df, players, variable_label):
     fig = px.line(df, 
                   x="round", 

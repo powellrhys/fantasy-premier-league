@@ -6,15 +6,17 @@ from update_data import \
 
 import streamlit as st
 
+# Configure page config
 st.set_page_config(
     page_title="Home",
     page_icon=":soccer:",
 )
 
+# Collect manager related stats
 team_name, region, gameweek_points, overall_points, overall_rank = summarise_manager_data('data/manager_summary.csv')
 
+# UI components
 st.title('FPL Dashboard')
-
 st.subheader(f'Team Name: :blue[{team_name}]')
 st.subheader(f'Team Region: :blue[{region}]')
 st.subheader(f'Latest Gameweek Points: :blue[{gameweek_points}]')
