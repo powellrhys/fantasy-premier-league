@@ -101,3 +101,33 @@ def plot_line_my_team_stats(df, players, variable_label):
                  )
     
     return fig
+
+# Bar plot for y variable per season
+def plot_bar_historic_season(df, y, ylabel):
+    fig = px.bar(df, 
+                x='season_x', 
+                y=y,
+                color='position',
+                labels={
+                    "season_x" : "Season",
+                    y : ylabel,
+                    "position" : "Position"
+                })
+
+    return fig
+
+# Bar plot for y variable player - season
+def plot_bar_historic_player(df, y, ylabel):
+    fig = px.bar(df, 
+                x='label', 
+                y=y,
+                color='position',
+                color_discrete_sequence=["#A6D0DD", "#FF6969", "#FFD3B0", "#FFF9DE"],
+                labels={
+                    "label" : "Player",
+                    y : ylabel,
+                    "position" : "Position"
+                })
+    fig.update_layout(xaxis = {"categoryorder":"total descending"})
+
+    return fig
