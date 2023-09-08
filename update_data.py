@@ -147,7 +147,7 @@ def update_premier_league_table():
    premier_league_table.to_csv('data/premier_league_table.csv')
 
 if __name__ == "__main__":
-   # update_premier_league_table()
    update_data()
    update_my_team_data()
+   update_premier_league_table()
    # update_all_player_data()

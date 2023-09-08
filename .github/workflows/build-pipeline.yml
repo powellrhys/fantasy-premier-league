@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build image: ${{ github.repository }}"
-        run: docker build -f Dockerfile -t $REGISTRY/$IMAGE_NAME --build-arg manager_id='1581482' --build-arg leagues='102675' .
+        run: docker build -f Dockerfile -t $REGISTRY/$IMAGE_NAME --build-arg manager_id='1581482' --build-arg leagues='102675, 306763, 306767, 306769, 501429' .
 
       - name: Push ${{ github.repository }} to GitHub container registry
         run: |
