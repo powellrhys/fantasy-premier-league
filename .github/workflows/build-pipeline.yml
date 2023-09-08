@@ -1,9 +1,14 @@
 name: Build & Publish Container
 
-on:
+on: 
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
   push:
     branches:
       - main
+      - feature/*
 
 env:
   REGISTRY: ghcr.io
@@ -11,6 +16,7 @@ env:
 
 jobs:
   build-and-push-image:
+    name: Build & Push Container
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,6 +36,18 @@ jobs:
       - name: "Build image: ${{ github.repository }}"
         run: docker build . -f Dockerfile -t $REGISTRY/$IMAGE_NAME
 
-      - name: Push ${{ github.repository }} to container registry
+      - name: Push ${{ github.repository }} to GitHub container registry
         run: |
           docker push $REGISTRY/$IMAGE_NAME:latest
+
+      - name: DockerHub Login
+        env: 
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Push ${{ github.repository }} to DockerHub Container registry
+        run: |
+          docker tag $REGISTRY/$IMAGE_NAME:latest $IMAGE_NAME:latest
+          docker push $IMAGE_NAME
