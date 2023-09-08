@@ -31,6 +31,23 @@ def update_my_team_data():
 
    # Read in player and current team data
    player_data_df = read_csv('data/players.csv')
+   
+   if not os.path.exists('data/my_team.csv'):
+      player_data_df = read_csv('data/players.csv')
+
+      # Generate player name lists based on position 
+      gk1 = player_data_df[player_data_df['position'] == 'Goalkeeper']['second_name'].to_list()[0]
+      def1 = player_data_df[player_data_df['position'] == 'Defender']['second_name'].to_list()[0]
+      mid1 = player_data_df[player_data_df['position'] == 'Midfielder']['second_name'].to_list()[0]
+      fow1 = player_data_df[player_data_df['position'] == 'Forward']['second_name'].to_list()[0]
+
+      my_team_data = [gk1, gk1, def1, def1, def1, def1, def1, mid1, 
+                      mid1, mid1, mid1, mid1, fow1, fow1, fow1]
+      
+      df = pd.DataFrame(data=my_team_data, columns=['0'])
+
+      df.to_csv('data/my_team.csv')
+
    current_team = read_csv('data/my_team.csv')['0'].to_list()
 
    # Collect player data for players in current team
@@ -132,5 +149,5 @@ def update_premier_league_table():
 if __name__ == "__main__":
    # update_premier_league_table()
    update_data()
-   # update_my_team_data()
+   update_my_team_data()
    # update_all_player_data()
