@@ -9,15 +9,17 @@ import streamlit as st
 st.set_page_config(
     page_title="Chip Analysis",
     page_icon=":soccer:",
+    layout='wide'
 ) 
 
 # UI components
 st.markdown("# Outfield Player Analyis")
 
 # Siderbar postion radio component
-position_radio = st.sidebar.radio(
-    "Position",
-    ('Defender', 'Midfielder', 'Forward'))
+position_radio = st.radio(
+    label="Position",
+    options=('Defender', 'Midfielder', 'Forward'),
+    horizontal=True)
 
 # Configure page tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(['Goals Scored', 'Assists', 'No. Starts', 

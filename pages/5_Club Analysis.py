@@ -46,7 +46,7 @@ with tab4:
 
 with tab5:
     # Collect position filter input
-    position_filter = position_checkbox('club_value_page')
+    position_filter = position_checkbox('club_value_page', vertical=False)
 
     # Group data by team and position
     team_data_df = player_data_df.groupby(by=['team', 'position']).sum()

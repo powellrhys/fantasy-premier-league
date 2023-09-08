@@ -12,6 +12,7 @@ import streamlit as st
 st.set_page_config(
     page_title="Player Value Analysis",
     page_icon=":soccer:",
+    layout='wide'
 )
 
 # Read player data
@@ -21,10 +22,10 @@ player_data_df = read_csv('data/players.csv')
 st.markdown("# Player Value Analyis")
 
 # Sidebar position filter
-position_filter = position_checkbox('player_value_page')
+position_filter = position_checkbox('player_value_page', vertical=False)
 
 # Sidebar budget slider
-budget_filter = st.sidebar.slider(label='Budget',
+budget_filter = st.slider(label='Budget',
                           min_value=0.0, 
                           max_value=14.0, 
                           value=14.0, 
