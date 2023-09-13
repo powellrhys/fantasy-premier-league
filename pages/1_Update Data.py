@@ -51,12 +51,8 @@ st.write(f"Last Updated: :blue[{json_read['general_data']}]")
 all_player_toggle = st.checkbox('Update All Player Data')
 st.write(f"Last Updated: :blue[{json_read['all_player_data']}]")
 
-if pw != os.getenv('password'):
-    st.text('Login to update Manager Team Data')
-
-else:
-    my_team_toggle = st.checkbox('Update My Team Data', value=False)
-    st.write(f"Last Updated: :blue[{json_read['my_team_data']}]")
+my_team_toggle = st.checkbox('Update My Team Data', value=False)
+st.write(f"Last Updated: :blue[{json_read['my_team_data']}]")
 
 update_data_button = st.button('Update data')
 

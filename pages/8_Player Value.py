@@ -27,8 +27,8 @@ position_filter = position_checkbox('player_value_page', vertical=False)
 # Sidebar budget slider
 budget_filter = st.slider(label='Budget',
                           min_value=0.0, 
-                          max_value=14.0, 
-                          value=14.0, 
+                          max_value=15.0, 
+                          value=15.0, 
                           step=0.1)
 
 # Configure page tabs
