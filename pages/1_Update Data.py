@@ -5,6 +5,7 @@ from update_data import \
     update_all_player_data, \
     update_premier_league_table
 
+from dotenv import load_dotenv
 import streamlit as st
 import datetime
 import json
@@ -15,6 +16,19 @@ st.set_page_config(
     page_title="Home",
     page_icon=":soccer:",
 )
+
+load_dotenv()
+
+# pw = st.sidebar.text_input('Password', type='password')
+
+col1, col2, = st.columns([3,2])
+
+with col1:
+    # UI Components
+    st.title('Refresh Data')
+
+with col2:
+    pw = st.text_input('Password', type='password')
 
 # Create empty json metadata file if no data previously collected
 if not os.path.exists('data/last_updated.json'):
@@ -29,9 +43,6 @@ if not os.path.exists('data/last_updated.json'):
 # Opening JSON metadata file
 with open('data/last_updated.json', 'r') as openfile:
     json_read = json.load(openfile)
-
-# UI Components
-st.title('Refresh Data')
 
 general_data_toggle = st.checkbox('Update General Data', value=True)
 st.write(f"Last Updated: :blue[{json_read['general_data']}]")
