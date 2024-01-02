@@ -35,6 +35,7 @@ jobs:
 
       - name: "Build image: ${{ github.repository }}"
         run: docker build -f backend/Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
+        
 
       - name: Push ${{ github.repository }} to GitHub container registry
         run: |
