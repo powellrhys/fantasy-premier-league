@@ -1,4 +1,4 @@
-name: Build & Publish Container
+name: Build & Push Container - Backend
 
 on: 
   workflow_dispatch:
@@ -33,9 +33,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Build image: ${{ github.repository }}"
+      - name: "Build image: ${{ github.repository }}-backend"
         run: docker build -f backend/Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
-        
+
 
       - name: Push ${{ github.repository }} to GitHub container registry
         run: |
@@ -50,5 +50,5 @@ jobs:
 
       - name: Push ${{ github.repository }} to DockerHub Container registry
         run: |
-          docker tag $REGISTRY/$IMAGE_NAME-backend:latest $IMAGE_NAME:latest
+          docker tag $REGISTRY/$IMAGE_NAME-backend:latest $IMAGE_NAME-backend:latest
           docker push $IMAGE_NAME
