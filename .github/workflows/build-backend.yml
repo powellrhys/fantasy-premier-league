@@ -51,4 +51,4 @@ jobs:
       - name: Push ${{ github.repository }} to DockerHub Container registry
         run: |
           docker tag $REGISTRY/$IMAGE_NAME-backend:latest $IMAGE_NAME-backend:latest
-          docker push $IMAGE_NAME
+          docker push $IMAGE_NAME-backend
