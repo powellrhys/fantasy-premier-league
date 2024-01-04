@@ -1,4 +1,4 @@
-name: Build & Publish Container
+name: Build & Push Container - Backend
 
 on: 
   workflow_dispatch:
