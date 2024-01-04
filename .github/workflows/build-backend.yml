@@ -54,8 +54,7 @@ jobs:
       - name: "Build image: ${{ github.repository }}-backend"
         run: docker build -f backend/Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
 
-
-      - name: Push ${{ github.repository }} to GitHub container registry
+      - name: Push ${{ github.repository }}-backend to GitHub container registry
         run: |
           docker push $REGISTRY/$IMAGE_NAME-backend:latest
 
@@ -66,7 +65,7 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Push ${{ github.repository }} to DockerHub Container registry
+      - name: Push ${{ github.repository }}-backend to DockerHub Container registry
         run: |
           docker tag $REGISTRY/$IMAGE_NAME-backend:latest $IMAGE_NAME-backend:latest
           docker push $IMAGE_NAME-backend
