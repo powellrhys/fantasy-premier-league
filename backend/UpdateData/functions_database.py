@@ -81,4 +81,47 @@ def update_player_table(cnxn, cursor, player_df):
                        row.position
                        )
     cnxn.commit()
-    cursor.close()
+
+
+def update_leagues_table(cnxn, cursor, league_df):
+
+    cursor.execute("drop table if exists [dbo].[fpl_league_data]")
+
+    create_table_query = """
+        CREATE TABLE fpl_league_data (
+            id int,
+            event_total int,
+            player_name varchar(255),
+            league_rank int,
+            last_rank int,
+            rank_sort int,
+            total int,
+            entry_name varchar(255),
+            bench_boost int,
+            free_hit int,
+            triple_c int,
+            league_name varchar(255),
+        );
+        """
+
+    cursor.execute(create_table_query)
+    cnxn.commit()
+
+    # Insert Dataframe into SQL Server:
+    for index, row in league_df.iterrows():
+        cursor.execute(f"INSERT INTO fpl_league_data ({','.join(list(league_df.columns))}) "
+                       f"values({','.join(['?'] * len(list(league_df.columns)))})",
+                       row.id,
+                       row.event_total,
+                       row.player_name,
+                       row.league_rank,
+                       row.last_rank,
+                       row.rank_sort,
+                       row.total,
+                       row.entry_name,
+                       row.bench_boost,
+                       row.free_hit,
+                       row.triple_c,
+                       row.league_name
+                       )
+    cnxn.commit()
