@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Read current league standings
-standings_columns =  ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
+standings_columns = ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
 player_data_df = read_csv('data/players.csv')
 premier_league_table = read_csv('data/premier_league_table.csv')[standings_columns].set_index('Position')
 
@@ -23,7 +23,7 @@ premier_league_table = read_csv('data/premier_league_table.csv')[standings_colum
 st.markdown("# Club Analyis")
 
 # Configure page tabs
-tab1, tab2, tab3, tab4, tab5= st.tabs(['Standings', 'Goals Scored', 'Goals Conceded',
+tab1, tab2, tab3, tab4, tab5 = st.tabs(['Standings', 'Goals Scored', 'Goals Conceded',
                                   'Goal Differene', 'FPL Points'])
 
 with tab1:
