@@ -27,9 +27,9 @@ def find_player_index_in_list(current_team, gk_names, def_names, mid_names, fow_
     # Loop through 15 picks, finding player ID
     index = []
     for i in range(15):
-        if i <=1:
+        if i <= 1:
             player_index = gk_names.index(current_team[i])
-        elif i <=6:
+        elif i <= 6:
             player_index = def_names.index(current_team[i])
         elif i <= 11:
             player_index = mid_names.index(current_team[i])

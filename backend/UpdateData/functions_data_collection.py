@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
 
 import pandas as pd
 import requests
@@ -76,7 +77,6 @@ def create_league_chip_dataframe(df):
                 chip_index[n] = 1
             else:
                 chip_index[n] = 0
-
             n = n + 1
 
         chip_index.insert(0, manager_id)
@@ -122,3 +122,42 @@ def collect_league_data():
         league_df = pd.concat([league_df, df])
 
     return league_df
+
+def collect_premier_league_table():
+
+    # Collect html for premier league standings
+    url = 'https://www.bbc.co.uk/sport/football/premier-league/table'
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text)
+
+    # Collect headers for premier league standings table
+    table1 = soup.find("table", {"class": "ssrcss-14j0ip6-Table e3bga5w5"})
+    headers = []
+    for i in table1.find_all('th'):
+        title = i.text
+        headers.append(title)
+
+    # Create empty dataframe from headers
+    premier_league_table = pd.DataFrame(columns=headers)
+
+    # Populate table with values
+    for j in table1.find_all('tr')[1:]:
+        row_data = j.find_all('td')
+        row = [i.text for i in row_data]
+        length = len(premier_league_table)
+        premier_league_table.loc[length] = row
+
+    # Filter and rename columns in dataframe
+    premier_league_table = premier_league_table[headers[:10]]
+    premier_league_table = premier_league_table.rename(
+        columns={"Played": "Pl",
+                 "Won": "W",
+                 "Drawn": "D",
+                 "Lost": "L",
+                 "Goals For": "GF",
+                 "Goals Against": "GA",
+                 "Goal Difference": "GD",
+                 "Points": "Pts"})
+
+    # Write table to storage
+    return premier_league_table

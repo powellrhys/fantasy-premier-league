@@ -125,3 +125,43 @@ def update_leagues_table(cnxn, cursor, league_df):
                        row.league_name
                        )
     cnxn.commit()
+
+
+def update_premier_league_table(cnxn, cursor, premier_league_table):
+
+    cursor.execute("drop table if exists [dbo].[fpl_premier_league_table]")
+
+    create_table_query = """
+        CREATE TABLE fpl_premier_league_table (
+            Position int,
+            Team varchar(255),
+            Pl int,
+            W int,
+            D int,
+            L int,
+            GF int,
+            GA int,
+            GD int,
+            Pts int,
+        );
+        """
+
+    cursor.execute(create_table_query)
+    cnxn.commit()
+
+    # Insert Dataframe into SQL Server:
+    for index, row in premier_league_table.iterrows():
+        cursor.execute(f"INSERT INTO fpl_premier_league_table ({','.join(list(premier_league_table.columns))}) "
+                       f"values({','.join(['?'] * len(list(premier_league_table.columns)))})",
+                       row.Position,
+                       row.Team,
+                       row.Pl,
+                       row.W,
+                       row.D,
+                       row.L,
+                       row.GF,
+                       row.GA,
+                       row.GD,
+                       row.Pts,
+                       )
+    cnxn.commit()
