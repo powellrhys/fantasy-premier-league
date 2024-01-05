@@ -1,12 +1,13 @@
-from pages.functions.support_functions import \
-    read_csv
 from pages.functions.ui_components import \
     position_checkbox
 from pages.functions.plots import \
     plot_points_per_team, \
     plot_bar_club_stats_bar
+from pages.functions.database import \
+    connect_to_database
 
 import streamlit as st
+import pandas as pd
 
 # Configure page config
 st.set_page_config(
@@ -15,16 +16,19 @@ st.set_page_config(
 )
 
 # Read current league standings
-standings_columns =  ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-player_data_df = read_csv('data/players.csv')
-premier_league_table = read_csv('data/premier_league_table.csv')[standings_columns].set_index('Position')
+standings_columns = ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
+cnxn, cursor = connect_to_database()
+player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+premier_league_table = pd.read_sql('Select * from fpl_premier_league_table', cnxn).set_index('Position')
+# player_data_df = read_csv('data/players.csv')
+# premier_league_table = read_csv('data/premier_league_table.csv')[standings_columns].set_index('Position')
 
 # UI components
 st.markdown("# Club Analyis")
 
 # Configure page tabs
-tab1, tab2, tab3, tab4, tab5= st.tabs(['Standings', 'Goals Scored', 'Goals Conceded',
-                                  'Goal Differene', 'FPL Points'])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(['Standings', 'Goals Scored', 'Goals Conceded',
+                                        'Goal Differene', 'FPL Points'])
 
 with tab1:
     st.table(premier_league_table)
@@ -37,7 +41,7 @@ with tab2:
 with tab3:
     conceded_df = premier_league_table.sort_values(by=['GA'], ascending=False).head(10)
     fig = plot_bar_club_stats_bar(conceded_df, 'GA', 'Goals Conceded')
-    st.plotly_chart(fig, use_container_width=True)   
+    st.plotly_chart(fig, use_container_width=True)
 
 with tab4:
     difference_df = premier_league_table.sort_values(by=['GD'], ascending=False).head(10)
