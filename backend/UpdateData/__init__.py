@@ -11,29 +11,33 @@ from functions_database import \
 import warnings
 import logging
 
-# Ignore warnings
-warnings.filterwarnings("ignore")
+import azure.functions as func
 
-# Configure Logger
-logger = logging.getLogger('BASIC')
+def main(req: func.HttpRequest) -> func.HttpResponse:
 
-# Connect to Database
-cnxn, cursor = connect_to_database()
-logger.info('Connected to Database')
+    # Ignore warnings
+    warnings.filterwarnings("ignore")
 
-# Collect and Update Player Data
-player_df = collect_player_data()
-update_player_table(cnxn, cursor, player_df)
-logger.info('Player Data updated in SQL')
+    # Configure Logger
+    logger = logging.getLogger('BASIC')
 
-# Collect and Update League Data
-league_df = collect_league_data()
-update_leagues_table(cnxn, cursor, league_df)
-logger.info('League Data updated in SQL')
+    # Connect to Database
+    cnxn, cursor = connect_to_database()
+    logger.info('Connected to Database')
 
-# Collect and Update Premier League Table Data
-premier_league_table = collect_premier_league_table()
-update_premier_league_table(cnxn, cursor, premier_league_table)
+    # Collect and Update Player Data
+    player_df = collect_player_data()
+    update_player_table(cnxn, cursor, player_df)
+    logger.info('Player Data updated in SQL')
 
-# Close SQL database connection
-cursor.close()
+    # Collect and Update League Data
+    league_df = collect_league_data()
+    update_leagues_table(cnxn, cursor, league_df)
+    logger.info('League Data updated in SQL')
+
+    # Collect and Update Premier League Table Data
+    premier_league_table = collect_premier_league_table()
+    update_premier_league_table(cnxn, cursor, premier_league_table)
+
+    # Close SQL database connection
+    cursor.close()
