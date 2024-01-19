@@ -32,11 +32,9 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS}}
 
       - name: Whitelist GitHub Runner IP
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            set -eu
-            agentIP=$(curl -s https://api.ipify.org/)
+        run: |
+          set -eu
+          agentIP=$(curl -s https://api.ipify.org/)
 
       # - name: Collect Runtime IP Address
       #   shell: push
