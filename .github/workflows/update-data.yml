@@ -2,10 +2,11 @@ name: Update Data
 
 on: 
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - feature/*
+  pull_request:
+    types:
+      - opened
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:  
   update-data:
