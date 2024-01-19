@@ -60,6 +60,6 @@ jobs:
         run: |
           set -eu
           az sql server firewall-rule delete \
-            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
-            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
+            --resource-group sql-resource-group \
+            --server powellrhys-sql-server \
             --name github-actions
