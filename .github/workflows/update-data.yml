@@ -27,9 +27,10 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Collect Runtime IP Address
-        run: curl https://api.ipify.org
-          # $agentIP = $(curl -s https://api.ipify.org/)
-          # Write-Host $agentIP
+        shell: push
+        run: |
+          $agentIP = $(curl https://api.ipify.org)
+          Write-Host $agentIP
 
       # - name: Install Microsoft ODBC
       #   run: sudo ACCEPT_EULA=Y apt-get install msodbcsql17 -y
