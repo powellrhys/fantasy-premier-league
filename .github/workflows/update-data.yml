@@ -37,8 +37,8 @@ jobs:
           agentIP=$(curl -s https://api.ipify.org/)
 
           az sql server firewall-rule create \
-            --resource-group sql-resource-group \
-            --server powellrhys-sql-server \
+            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
+            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
             --name github-actions \
             --start-ip-address $agentIP \
             --end-ip-address $agentIP
