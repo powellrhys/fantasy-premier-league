@@ -27,4 +27,11 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Update Data
+        env:
+          leagues: ${{ vars.LEAGUES }}
+          manager_id: ${{ vars.MANAGER_ID }}
+          sql_server_name: ${{ secrets.SQL_SERVER_NAME }}
+          sql_server_database: ${{ secrets.SQL_SERVER_DATABASE }}
+          sql_server_username: ${{ secrets.SQL_SERVER_USERNAME }}
+          sql_server_password: ${{ secrets.SQL_SERVER_PASSWORD }}
         run: python backend/UpdateData/__init__.py
