@@ -1,7 +1,11 @@
-name: Deploy to Azure
+name: Update Data
 
 on: 
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/*
 
 jobs:  
   update-data:
