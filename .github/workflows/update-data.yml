@@ -28,7 +28,7 @@ jobs:
 
       - name: Collect Runtime IP Address
         run: |
-          agentIP = $(curl -s https://api.ipify.org/)
+          $agentIP = $(curl -s https://api.ipify.org/)
           Write-Host $agentIP
 
       # - name: Install Microsoft ODBC
