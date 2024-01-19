@@ -35,11 +35,10 @@ jobs:
         run: |
           set -eu
           agentIP=$(curl -s https://api.ipify.org/)
-          echo $agentIP
 
           az sql server firewall-rule create \
-            --resource-group sql-resource-group \
-            --server powellrhys-sql-server \
+            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
+            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
             --name github-actions \
             --start-ip-address $agentIP \
             --end-ip-address $agentIP
@@ -55,4 +54,12 @@ jobs:
           sql_server_database: ${{ secrets.SQL_SERVER_DATABASE }}
           sql_server_username: ${{ secrets.SQL_SERVER_USERNAME }}
           sql_server_password: ${{ secrets.SQL_SERVER_PASSWORD }}
-        run: python backend/UpdateData/__init__.py
+        run: python backend/UpdateData/main.py
+
+      - name: Remove GitHub Runner IP from Whitelist
+        run: |
+          set -eu
+          az sql server firewall-rule delete \
+            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
+            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
+            --n github-actions
