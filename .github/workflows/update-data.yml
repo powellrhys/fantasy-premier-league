@@ -1,0 +1,66 @@
+name: Update Data
+
+on: 
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:  
+  update-data:
+    name: Update Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS}}
+
+      - name: Whitelist GitHub Runner IP
+        run: |
+          set -eu
+          agentIP=$(curl -s https://api.ipify.org/)
+
+          az sql server firewall-rule create \
+            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
+            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
+            --name github-actions \
+            --start-ip-address $agentIP \
+            --end-ip-address $agentIP
+
+      - name: Install Microsoft ODBC
+        run: sudo ACCEPT_EULA=Y apt-get install msodbcsql17 -y
+
+      - name: Update Data
+        env:
+          leagues: ${{ vars.LEAGUES }}
+          manager_id: ${{ vars.MANAGER_ID }}
+          sql_server_name: ${{ secrets.SQL_SERVER_NAME }}
+          sql_server_database: ${{ secrets.SQL_SERVER_DATABASE }}
+          sql_server_username: ${{ secrets.SQL_SERVER_USERNAME }}
+          sql_server_password: ${{ secrets.SQL_SERVER_PASSWORD }}
+        run: python backend/UpdateData/main.py
+
+      - name: Remove GitHub Runner IP from Whitelist
+        run: |
+          set -eu
+          az sql server firewall-rule delete \
+            --resource-group ${{ secrets.AZURE_SQL_SERVER_RG }} \
+            --server ${{ secrets.AZURE_SQL_SERVER_NAME }} \
+            --name github-actions
