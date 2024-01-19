@@ -10,7 +10,7 @@ def connect_to_database():
     database = os.getenv('sql_server_database')
     username = os.getenv('sql_server_username')
     password = os.getenv('sql_server_password')
-    cnxn = pyodbc.connect('DRIVER={SQL Server};'
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
                           'SERVER=' + server + ';'
                           'DATABASE=' + database + ';'
                           'UID=' + username + ';'
