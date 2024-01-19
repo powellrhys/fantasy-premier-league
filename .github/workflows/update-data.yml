@@ -31,11 +31,18 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS}}
 
-      - name: Collect Runtime IP Address
-        shell: push
-        run: |
-          $agentIP = $(curl -s https://api.ipify.org)
-          Write-Host $agentIP
+      - name: Whitelist GitHub Runner IP
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            set -eu
+            agentIP=$(curl -s https://api.ipify.org/)
+
+      # - name: Collect Runtime IP Address
+      #   shell: push
+      #   run: |
+      #     $agentIP = $(curl -s https://api.ipify.org)
+      #     Write-Host $agentIP
 
       # - name: Install Microsoft ODBC
       #   run: sudo ACCEPT_EULA=Y apt-get install msodbcsql17 -y
