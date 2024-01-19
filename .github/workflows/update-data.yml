@@ -40,7 +40,7 @@ jobs:
           az sql server firewall-rule create \
             --resource-group sql-resource-group \
             --server powellrhys-sql-server \
-            -name github-actions \
+            --name github-actions \
             --start-ip-address $agentIP \
             --end-ip-address $agentIP
           
