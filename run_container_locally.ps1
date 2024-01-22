@@ -1,3 +1,12 @@
+param (
+    [Parameter(HelpMessage = "Rebuild Container Locally")]
+    [boolean]$build
+)
+
+if ($build) {
+    docker build -t fpl-frontend -f frontend/Dockerfile .
+}
+
 # Empty array to store environmental variables
 $environment_variables_array = @()
 
