@@ -3,11 +3,10 @@ from pages.functions.ui_components import \
 from pages.functions.plots import \
     plot_scatter_player_points, \
     plot_player_points_bar
-from pages.functions.database import \
-    connect_to_database
 
 import streamlit as st
 import pandas as pd
+import requests
 
 # Configure page config
 st.set_page_config(
@@ -16,8 +15,8 @@ st.set_page_config(
     layout='wide'
 )
 
-cnxn, cursor = connect_to_database()
-player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+response = requests.get("http://localhost:8000/players")
+player_data_df = pd.DataFrame(response.json())
 
 # UI components
 st.markdown("# Player Value Analyis")

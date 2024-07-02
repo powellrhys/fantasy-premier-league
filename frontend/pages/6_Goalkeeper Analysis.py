@@ -1,10 +1,9 @@
 from pages.functions.plots import \
     plot_player_points_bar
-from pages.functions.database import \
-    connect_to_database
 
 import streamlit as st
 import pandas as pd
+import requests
 
 # Configure page config
 st.set_page_config(
@@ -21,8 +20,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['Clean Sheets', 'Saves Made'
                                                     'Red Cards'])
 
 # Collect and filter data
-cnxn, cursor = connect_to_database()
-goalkeeper_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+response = requests.get("http://localhost:8000/players")
+goalkeeper_df = pd.DataFrame(response.json())
 goalkeeper_df = goalkeeper_df[goalkeeper_df['position'] == 'Goalkeeper']
 
 # Generate and render plots

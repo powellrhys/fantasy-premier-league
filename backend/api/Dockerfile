@@ -1,10 +1,10 @@
 FROM python:3.9-slim
 
-COPY . /app
+COPY requirements.txt app/requirements.txt
 WORKDIR /app
-
-RUN pip install -U pip
 RUN pip install -r requirements.txt
+
+COPY . /app
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
@@ -20,8 +20,6 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/*
 
-EXPOSE 8501
+EXPOSE 8000
 
-ENTRYPOINT ["streamlit","run"]
-
-CMD ["Home.py"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000" ,"--reload"]

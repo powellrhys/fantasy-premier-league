@@ -43,3 +43,29 @@ jobs:
       - name: Lint with yamllint
         run: |
           yamllint -c .yamllint.yml .github/workflows/build-backend.yml
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Build image: ${{ github.repository }}"
+        run: docker build -f backend/api/Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
+
+      - name: Push ${{ github.repository }}-backend to GitHub container registry
+        run: |
+          docker push $REGISTRY/$IMAGE_NAME-backend:latest
+
+      - name: DockerHub Login
+        env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Push ${{ github.repository }}-frontend to DockerHub Container registry
+        run: |
+          docker tag $REGISTRY/$IMAGE_NAME-frontend:latest $IMAGE_NAME-backend:latest
+          docker push $IMAGE_NAME-backend
