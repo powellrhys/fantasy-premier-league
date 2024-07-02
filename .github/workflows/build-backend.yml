@@ -51,7 +51,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Build image: ${{ github.repository }}"
+      - name: "Build image: ${{ github.repository }}-backend"
         working-directory: './backend/api'
         run: docker build -f Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
 
@@ -66,7 +66,7 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Push ${{ github.repository }}-frontend to DockerHub Container registry
+      - name: Push ${{ github.repository }}-backend to DockerHub Container registry
         run: |
-          docker tag $REGISTRY/$IMAGE_NAME-frontend:latest $IMAGE_NAME-backend:latest
+          docker tag $REGISTRY/$IMAGE_NAME-backend:latest $IMAGE_NAME-backend:latest
           docker push $IMAGE_NAME-backend
