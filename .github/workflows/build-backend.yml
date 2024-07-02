@@ -52,7 +52,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build image: ${{ github.repository }}"
-        run: docker build -f backend/api/Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
+        working-directory: './backend/api'
+        run: docker build -f Dockerfile -t $REGISTRY/$IMAGE_NAME-backend .
 
       - name: Push ${{ github.repository }}-backend to GitHub container registry
         run: |
