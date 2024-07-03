@@ -1,4 +1,4 @@
-name: Lint & Test - Backend
+name: Build & Push Container - Backend
 
 on:
   workflow_dispatch:
