@@ -31,7 +31,7 @@ if pw != os.getenv('password'):
 else:
 
     # Collect list of user leages
-    response = requests.get("http://localhost:8000/leagues")
+    response = requests.get(f"{os.getenv('api_url')}/leagues?api_key={os.getenv('password')}")
     leagues_df = pd.DataFrame(response.json())
 
     list_of_leagues = leagues_df['league_name'].unique()

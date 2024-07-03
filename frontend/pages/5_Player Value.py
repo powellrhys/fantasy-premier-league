@@ -4,9 +4,11 @@ from pages.functions.plots import \
     plot_scatter_player_points, \
     plot_player_points_bar
 
+from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
 import requests
+import os
 
 # Configure page config
 st.set_page_config(
@@ -15,7 +17,9 @@ st.set_page_config(
     layout='wide'
 )
 
-response = requests.get("http://localhost:8000/players")
+load_dotenv()
+
+response = requests.get(f"{os.getenv('api_url')}/players?api_key={os.getenv('password')}")
 player_data_df = pd.DataFrame(response.json())
 
 # UI components

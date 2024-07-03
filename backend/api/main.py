@@ -1,64 +1,82 @@
+from api_functions import connect_to_database
+
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-from fastapi import FastAPI
 import pandas as pd
+import warnings
 import uvicorn
-import pyodbc
 import os
 
-def connect_to_database():
+# Ignore warnings
+warnings.filterwarnings("ignore")
 
-    load_dotenv()
+# Load environment variables
+load_dotenv()
 
-    server = os.getenv('sql_server_name')
-    database = os.getenv('sql_server_database')
-    username = os.getenv('sql_server_username')
-    password = os.getenv('sql_server_password')
-    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                          'SERVER=' + server + ';'
-                          'DATABASE=' + database + ';'
-                          'UID=' + username + ';'
-                          'PWD=' + password)
-    cursor = cnxn.cursor()
-
-    return cnxn, cursor
-
-
+# Spin up Fast API application
 app = FastAPI()
 
+# Define Root Endpoint
 @app.get("/")
 async def read_root():
-    return {"message": "Welcome to the model API!"}
+    content = {"message": "Fantasy Premier League Fast API Application"}
+    return JSONResponse(status_code=200, content=content)
 
 
+# Define league data endpoint
 @app.get("/leagues")
-def read_league_data():
+def read_league_data(api_key: str = None):
 
-    # Collect list of user leages
-    cnxn, _ = connect_to_database()
-    leagues_df = pd.read_sql('Select * from fpl_league_data', cnxn)
+    # Authenticate request
+    if api_key == os.getenv('password'):
 
-    return leagues_df.to_dict()
+        # Collect list of user leages
+        cnxn, _ = connect_to_database()
+        leagues_df = pd.read_sql('Select * from fpl_league_data', cnxn)
+
+        return JSONResponse(status_code=200, content=leagues_df.to_dict())
+
+    # Raise exception if authentication has failed
+    else:
+        raise HTTPException(status_code=403, detail="Authentication failed")
 
 
+# Define player data endpoint
 @app.get("/players")
-def read_player_data():
+def read_player_data(api_key: str = None):
 
-    # Collect player data
-    cnxn, _ = connect_to_database()
-    player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+    # Authenticate request
+    if api_key == os.getenv('password'):
 
-    return player_data_df.to_dict()
+        # Collect player data
+        cnxn, _ = connect_to_database()
+        player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+
+        return JSONResponse(status_code=200, content=player_data_df.to_dict())
+
+    # Raise exception if authentication has failed
+    else:
+        raise HTTPException(status_code=403, detail="Authentication failed")
 
 
+# Define league table data endpoint
 @app.get("/league-table")
-def read_league_table():
+def read_league_table(api_key: str = None):
 
-    # Collect league table data
-    cnxn, _ = connect_to_database()
-    premier_league_table = pd.read_sql('Select * from fpl_premier_league_table', cnxn) \
-        .set_index('Position')
+    # Authenticate request
+    if api_key == os.getenv('password'):
 
-    return premier_league_table.to_dict()
+        # Collect league table data
+        cnxn, _ = connect_to_database()
+        premier_league_table = pd.read_sql('Select * from fpl_premier_league_table', cnxn) \
+            .set_index('Position')
+
+        return JSONResponse(status_code=200, content=premier_league_table.to_dict())
+
+    # Raise exception if authentication has failed
+    else:
+        raise HTTPException(status_code=403, detail="Authentication failed")
 
 
 if __name__ == '__main__':

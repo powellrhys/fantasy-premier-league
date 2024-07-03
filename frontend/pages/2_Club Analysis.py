@@ -4,9 +4,11 @@ from pages.functions.plots import \
     plot_points_per_team, \
     plot_bar_club_stats_bar
 
+from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
 import requests
+import os
 
 # Configure page config
 st.set_page_config(
@@ -14,12 +16,14 @@ st.set_page_config(
     page_icon=":soccer:",
 )
 
+load_dotenv()
+
 # Read current league standings
 standings_columns = ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-response = requests.get("http://localhost:8000/players")
+response = requests.get(f"{os.getenv('api_url')}/players?api_key={os.getenv('password')}")
 player_data_df = pd.DataFrame(response.json())
 
-response = requests.get("http://localhost:8000/league-table")
+response = requests.get(f"{os.getenv('api_url')}/league-table?api_key={os.getenv('password')}")
 premier_league_table = pd.DataFrame(response.json())
 
 # UI components
