@@ -3,11 +3,12 @@ from pages.functions.ui_components import \
 from pages.functions.plots import \
     plot_points_per_team, \
     plot_bar_club_stats_bar
-from pages.functions.database import \
-    connect_to_database
 
+from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
+import requests
+import os
 
 # Configure page config
 st.set_page_config(
@@ -15,13 +16,15 @@ st.set_page_config(
     page_icon=":soccer:",
 )
 
+load_dotenv()
+
 # Read current league standings
 standings_columns = ['Position', 'Team', 'Pl', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-cnxn, cursor = connect_to_database()
-player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
-premier_league_table = pd.read_sql('Select * from fpl_premier_league_table', cnxn).set_index('Position')
-# player_data_df = read_csv('data/players.csv')
-# premier_league_table = read_csv('data/premier_league_table.csv')[standings_columns].set_index('Position')
+response = requests.get(f"{os.getenv('api_url')}/players?api_key={os.getenv('password')}")
+player_data_df = pd.DataFrame(response.json())
+
+response = requests.get(f"{os.getenv('api_url')}/league-table?api_key={os.getenv('password')}")
+premier_league_table = pd.DataFrame(response.json())
 
 # UI components
 st.markdown("# Club Analyis")

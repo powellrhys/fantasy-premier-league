@@ -1,11 +1,10 @@
-from pages.functions.database import \
-    connect_to_database
 from pages.functions.plots import \
     plot_bar_chips_used
 
 from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
+import requests
 import os
 
 # Configure page config
@@ -32,8 +31,8 @@ if pw != os.getenv('password'):
 else:
 
     # Collect list of user leages
-    cnxn, cursor = connect_to_database()
-    leagues_df = pd.read_sql('Select * from fpl_league_data', cnxn)
+    response = requests.get(f"{os.getenv('api_url')}/leagues?api_key={os.getenv('password')}")
+    leagues_df = pd.DataFrame(response.json())
 
     list_of_leagues = leagues_df['league_name'].unique()
     league_selected = st.selectbox(

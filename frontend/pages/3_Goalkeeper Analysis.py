@@ -1,16 +1,19 @@
 from pages.functions.plots import \
     plot_player_points_bar
-from pages.functions.database import \
-    connect_to_database
 
+from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
+import requests
+import os
 
 # Configure page config
 st.set_page_config(
     page_title="Chip Analysis",
     page_icon=":soccer:",
 )
+
+load_dotenv()
 
 # UI components
 st.markdown("# Goalkeeper Analyis")
@@ -21,8 +24,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['Clean Sheets', 'Saves Made'
                                                     'Red Cards'])
 
 # Collect and filter data
-cnxn, cursor = connect_to_database()
-goalkeeper_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+response = requests.get(f"{os.getenv('api_url')}/players?api_key={os.getenv('password')}")
+goalkeeper_df = pd.DataFrame(response.json())
 goalkeeper_df = goalkeeper_df[goalkeeper_df['position'] == 'Goalkeeper']
 
 # Generate and render plots

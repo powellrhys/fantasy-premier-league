@@ -3,11 +3,12 @@ from pages.functions.ui_components import \
 from pages.functions.plots import \
     plot_scatter_player_points, \
     plot_player_points_bar
-from pages.functions.database import \
-    connect_to_database
 
+from dotenv import load_dotenv
 import streamlit as st
 import pandas as pd
+import requests
+import os
 
 # Configure page config
 st.set_page_config(
@@ -16,8 +17,10 @@ st.set_page_config(
     layout='wide'
 )
 
-cnxn, cursor = connect_to_database()
-player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
+load_dotenv()
+
+response = requests.get(f"{os.getenv('api_url')}/players?api_key={os.getenv('password')}")
+player_data_df = pd.DataFrame(response.json())
 
 # UI components
 st.markdown("# Player Value Analyis")
