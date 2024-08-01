@@ -1,5 +1,6 @@
 from api_functions import connect_to_database
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
@@ -14,8 +15,19 @@ warnings.filterwarnings("ignore")
 # Load environment variables
 load_dotenv()
 
+origins = [
+    "http://localhost:5173"
+]
+
 # Spin up Fast API application
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Define Root Endpoint
 @app.get("/")
