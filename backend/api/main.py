@@ -65,7 +65,7 @@ def read_player_data(api_key: str = None):
         cnxn, _ = connect_to_database()
         player_data_df = pd.read_sql('Select * from fpl_player_data', cnxn)
 
-        return JSONResponse(status_code=200, content=player_data_df.to_dict())
+        return JSONResponse(status_code=200, content=player_data_df.to_dict('records'))
 
     # Raise exception if authentication has failed
     else:

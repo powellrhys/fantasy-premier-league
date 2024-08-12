@@ -1,56 +1,76 @@
 import { useState, useEffect } from 'react'
+
+import PriceSlider from '../components/filters/PriceSlider';
 import ScatterPlot from '../components/charts/ScatterPlot';
-import SideBar from '../components/sidebar/SideBar';
+import DropDown from '../components/filters/DropDown';
+import CheckBox from '../components/filters/CheckBox';
+
+import { CollectPlayerData } from '../functions/FetchDataFunctions';
+import {
+  MapDataToAxes,
+  FilterDataByPrice,
+  GeneratePlayerScatterPlot,
+  TogglePositionData
+} from '../functions/TransformDataFunctions';
 
 function PlayerValue() {
+
+  const positions = [
+    {id: 1, position: 'Goalkeeper', checked: true},
+    {id: 2, position: 'Defender', checked: true},
+    {id: 3, position: 'Midfielder', checked: true},
+    {id: 4, position: 'Forward', checked: true}
+  ]
+
   const [plotData, setPlotData] = useState([] as any);
   const [xAxis, setXAxis] = useState('minutes')
+  const [maxPrice, setMaxPrice] = useState(16 as number)
+  const [delayedPriceRange, setdelayedPriceRange] = useState(16 as number)
+  const [positionToggle, setPositionToggle] = useState(positions as any)
 
   useEffect(() => {
-     fetch('http://localhost:8000/players?api_key=wru12!', {  
-      headers: {  
-        Accept: "application/json"  
-      } })
-        .then((response) => response.json())
-        .then((data) => {
-          const listOfDicts = Object.values(data[xAxis]).map((value, index) => ({
-            x: value,
-            y: Object.values(data.total_points)[index],
-            position: Object.values(data.element_type)[index],
-            second_name: Object.values(data.second_name)[index]
-          }));
+    const handler = setTimeout(() => {
+      setdelayedPriceRange(maxPrice);
+    }, 200);
 
-          const data_array: { label: string; data: any }[] = [];
-          const element_types = Object.values(data.element_type) as number[]
-          for (let i = 1; i <= Math.max(...element_types); i++) {
-            const filteredData = listOfDicts.filter(function(item) {
-              return item.position == i
-            })
+    // Cleanup the timeout if value changes within the delay period
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [maxPrice]);
 
-            type MappingType = {
-              [key: number]: string;
-            };
+  useEffect(() => {
+    async function fetchData() {
+      let data: any;
+      try {
+          data = await CollectPlayerData();
+          data = MapDataToAxes(data, xAxis, 'total_points')
+          data = FilterDataByPrice(data, maxPrice)
+          data = GeneratePlayerScatterPlot(data)
+          data = TogglePositionData(data, positionToggle)
+          setPlotData(data)
+      } catch (err) {
+          console.error("Failed to collect player data:", err);
+      }
+  }
+  fetchData()
 
-            const mapping: MappingType = {
-              1: 'GoalKeeper',
-              2: 'Defender',
-              3: 'Midfielder',
-              4: 'Forward'
-            }
+  }, [xAxis, delayedPriceRange, positionToggle]);
 
-            data_array.push({label: mapping[i], data: filteredData})
-          }
-          setPlotData(data_array)
-
-        })
-        .catch((err) => {
-           console.log(err.message);
-        });
-  }, [xAxis]);
-
-  const handleChange = (e: any) => {
+  const handleXAxisChange = (e: any) => {
     setXAxis(e.target.value)
   }
+
+  const handlePriceChange = (e: any) => {
+    setMaxPrice(e.target.value)
+  }
+
+const handleCheckBoxChange = (index : any) => (event : any) => {
+  const newPositions = [...positionToggle]
+  newPositions[index]['checked'] = !positionToggle[index]['checked']
+  setPositionToggle(newPositions)
+};
+
 
   const filters = [
     'minutes',
@@ -61,14 +81,31 @@ function PlayerValue() {
   return (
     <>
       <h1>Outfield Player Analysis</h1>
-      <div style={{display: 'flex'}}>
-        <div style={{flex: "70%"}}>
+      <div>
+        <div style={{display: 'flex', margin: '20px'}}>
+          <div style={{flex: 1}}>
+            <DropDown 
+              handleXAxisChange={handleXAxisChange}
+              filters={filters}
+              label={'Variable'}
+            />
+          </div>
+          <div style={{flex: 1}}>
+            <PriceSlider 
+              handleChange={handlePriceChange}
+              maxPrice={maxPrice}
+              label={'Maximum Price'}
+            />
+          </div>
+          <div style={{flex: 1}}>
+            <CheckBox 
+              items={positionToggle}
+              handleCheckBoxChange={handleCheckBoxChange} />
+          </div>
+        </div>
+        <div>
           <ScatterPlot data={plotData} xAxis={xAxis}/>
         </div>
-        {/* <div style={{flex: "20%"}}> */}
-          <div style={{flex: "30%"}}>
-            <SideBar handleChange={handleChange} filters={filters}/>  
-          </div>   
       </div>
   </>
   )

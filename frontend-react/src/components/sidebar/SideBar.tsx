@@ -1,6 +1,19 @@
+import Slider from '@mui/material/Slider';
+import './SideBar.css'
+
 export default function SideBar(
-    {handleChange, filters} :
-    {handleChange : any, filters : any}
+    {
+        handleXAxisChange,
+        handlePriceRangeChange,
+        filters,
+        priceRange
+    } :
+    {
+        handleXAxisChange : any,
+        handlePriceRangeChange: any,
+        filters : any,
+        priceRange : any
+    }
 ){
 
     const options = filters.map((item : any, index: any) =>
@@ -17,12 +30,25 @@ export default function SideBar(
             <h2>Filters</h2>
             <select 
                 className="drop-down"
-                onChange={handleChange}
+                onChange={handleXAxisChange}
                 name="yaxis"
                 id="yaxis"
-                defaultValue={filters[0]}>
-                    {options}
+                defaultValue={filters[0]}>{options}
             </select>
+            <div style={{margin: '40px'}}>
+                <Slider
+                    getAriaLabel={() => 'Minimum distance'}
+                    onChange={handlePriceRangeChange}
+                    // aria-label="Always visible"
+                    value={priceRange} 
+                    valueLabelDisplay="on"
+                    color='secondary'
+                    min={0}
+                    max={16}
+                    step={0.1}
+                    disableSwap
+                />
+            </div>
         </div>
     )
 }

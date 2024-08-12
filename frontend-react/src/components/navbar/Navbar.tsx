@@ -1,14 +1,40 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import './Navbar.css'
 
 export default function Navbar() {
+
+    const CustomNavLink = (
+        {route, nav_text} :
+        {route: string, nav_text: string}
+    ) => {
+        return (
+            <li>
+                <NavLink 
+                    className={({ isActive }) =>
+                        isActive ? "active-link" : "inactive-link"}
+                    to={route}>
+                        {nav_text}   
+                </NavLink>
+            </li>
+        )
+    }
+
     return (
         <nav className="nav">
-            <Link to="/" className="home-title">FPL Dashboard</Link>
+            <NavLink to="/" className="home-title">FPL Dashboard</NavLink>
             <ul>
-                <li><Link to="/player-analysis">Player Analysis</Link></li>
-                <li><Link to="/goal-keeper-analysis">GK Analysis</Link></li>
-                <li><Link to="/chip-analysis">Chip Analysis</Link></li>
+                <CustomNavLink 
+                    route={'/player-analysis'} 
+                    nav_text={'Player Analysis'}
+                />
+                <CustomNavLink 
+                    route={'/goal-keeper-analysis'} 
+                    nav_text={'GK Analysis'}
+                />
+                <CustomNavLink 
+                    route={'/chip-analysis'} 
+                    nav_text={'Chip Analysis'}
+                />
             </ul>
         </nav>
     )

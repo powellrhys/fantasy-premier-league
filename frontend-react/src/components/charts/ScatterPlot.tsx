@@ -33,6 +33,8 @@ export default function ScatterPlot(
                 },
             },
         },
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
             x: {
                 type: 'linear',
@@ -54,7 +56,9 @@ export default function ScatterPlot(
 
     return (
         <div className='charts'>
+            <div>
             <Scatter data={plot_data} options={options} />
+            </div>
         </div>
     )
 }

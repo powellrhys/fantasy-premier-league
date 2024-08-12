@@ -1,4 +1,4 @@
-.hide-container {
+/* .hide-container {
     display: none;
 }
 
@@ -15,7 +15,7 @@
   }
   
 .left-content.with-panel {
-  flex: 80%; /* Adjust this value as needed */
+  flex: 80%;
 }
 
 .left-content.without-panel {
@@ -23,7 +23,7 @@
 }
 
 .drop-down {
-  background-color: #38003c; /* Green */
+  background-color: #38003c; 
   border: black;
   color: white;
   padding: 5px 32px;
@@ -40,6 +40,6 @@
   background-color: aquamarine;
 }
 
-/* option:hover {
-  background-color: #e90052;;
+.sidebar-container {
+  background-color: white;
 } */
