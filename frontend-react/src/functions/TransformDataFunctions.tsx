@@ -11,6 +11,36 @@ export function MapDataToAxes(
     return data
 }
 
+export function FiterDataByPosition(
+    data:any,
+    position:string
+) {
+
+    const filtered_data = data.filter(function(item:any) {
+        return item.position == position
+    })
+
+    return filtered_data
+}
+
+export function OrderDatabyMetric(
+    data:any,
+    metric:string
+) {
+    data.sort((a:any, b:any) => b[metric] - a[metric])
+
+    return data
+}
+
+export function CollectTopResults(
+    data:any,
+    number:number
+) {
+    const top_ten = data.slice(0,number)
+
+    return top_ten
+}
+
 export function FilterDataByPrice(
     data: any,
     maxPrice: number
@@ -20,6 +50,19 @@ export function FilterDataByPrice(
       )
 
     return filterd_data
+}
+
+export function GenerateGoalKepperBarPlot(
+    data:any,
+    yAxis: string
+) {
+
+    const labels = data && data.map((dict:any) => dict.x);
+    const values = data && data.map((dict:any) => dict.y);
+
+    const plot_data = [{labels: labels, datasets: [{label: yAxis, data: values, backgroundColor: '#e90052'}]}]
+
+    return plot_data
 }
 
 export function GeneratePlayerScatterPlot(data: any) {

@@ -1,53 +1,56 @@
 import { useState, useEffect } from 'react'
 import BarPlot from '../components/charts/BarPlot';
-import SideBar from '../components/sidebar/SideBar';
+import DropDown from '../components/filters/DropDown';
+import Slider from '../components/filters/Slider';
 import '../components/sidebar/SideBar.css'
+
+import { CollectPlayerData } from '../functions/FetchDataFunctions';
+import {
+  MapDataToAxes,
+  FiterDataByPosition,
+  OrderDatabyMetric,
+  CollectTopResults,
+  GenerateGoalKepperBarPlot
+} from '../functions/TransformDataFunctions';
 
 function GoalKeeperAnalysis() {
   const [plotData, setPlotData] = useState([] as any);
-  const [yAxis, setYAxis] = useState('saves')
-  const [showFilter, setShowFilter] = useState(true)
+  const [yAxis, setYAxis] = useState('saves' as string)
+  const [dataPoints, setDatPoints] = useState(15 as number)
+  const [delayedDataPoints, setDelayedDatPoints] = useState(15 as number)
+  
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDelayedDatPoints(dataPoints);
+    }, 200);
+
+    // Cleanup the timeout if value changes within the delay period
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dataPoints]);
+
 
   useEffect(() => {
 
-     fetch('http://localhost:8000/players?api_key=wru12!', {  
-      headers: {  
-        Accept: "application/json"  
-      } })
-        .then((response) => response.json())
-        .then((data) => {
-          const listOfDicts = Object.values(data[yAxis]).map((value, index) => ({
-            x: Object.values(data.second_name)[index],
-            y: value,
-            position: Object.values(data.position)[index]
-          }));
+    async function fetchData() {
+      let data: any;
+      try {
+          data = await CollectPlayerData();
+          data = MapDataToAxes(data, 'second_name', yAxis)
+          data = FiterDataByPosition(data, 'Goalkeeper')
+          data = OrderDatabyMetric(data, 'y')
+          data = CollectTopResults(data, dataPoints)
+          data = GenerateGoalKepperBarPlot(data, yAxis)
+          setPlotData(data)
+      } catch (err) {
+          console.error("Failed to collect player data:", err);
+      }
+  }
+  fetchData()
 
-          // console.log(data)
-
-          const filteredData = listOfDicts.filter(function(item) {
-              return item.position == 'Goalkeeper'
-            })
-
-          filteredData.sort((a:any, b:any) => b.y - a.y)
-          const top_ten = filteredData.slice(0,15)
-
-          // console.log(top_ten)
-
-          const labels = top_ten && top_ten.map(dict => dict.x);
-          const values = top_ten && top_ten.map(dict => dict.y);
-
-          const plot_data = [{labels: labels, datasets: [{label: yAxis, data: values}]}]
-          // console.log(plot_data)
-          
-          setPlotData(plot_data)
-
-        })
-        .catch((err) => {
-           console.log(err.message);
-        });
-  }, [yAxis]);
-
-  // console.log(plotData)
+  }, [yAxis, delayedDataPoints]);
 
   const filters = [
     'saves',
@@ -60,16 +63,36 @@ function GoalKeeperAnalysis() {
     setYAxis(e.target.value)
   }
 
+  const handleSliderChange = (e: any) => {
+    setDatPoints(e.target.value)
+  }
+
   return (
     <>
       <h1>Goalkeeper Analysis</h1>
-      <div style={{display: 'flex'}}>
-        <div style={{flex: "70%"}}>
+      <div>
+        <div style={{display: 'flex', margin: '20px'}}>
+          <div style={{flex: 1}}>
+              <DropDown 
+                  handleXAxisChange={handleChange}
+                  filters={filters}
+                  label={'Variable'}
+              />
+            </div>
+            <div style={{flex: 1}}>
+            <Slider 
+              handleChange={handleSliderChange}
+              value={dataPoints}
+              label={'Number of Data Points'}
+              max_value={20}
+              min_value={0}
+              step_size={1}
+            />
+          </div>
+          </div>
+      </div>
+      <div>
           {plotData.length > 0 && <BarPlot data={plotData} stacked={false} />}
-        </div>
-        <div style={{flex: "30%"}}>
-          <SideBar handleChange={handleChange} filters={filters}/>  
-        </div>      
       </div>
   </>
   )

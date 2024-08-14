@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import PriceSlider from '../components/filters/PriceSlider';
+import Slider from '../components/filters/Slider';
 import ScatterPlot from '../components/charts/ScatterPlot';
 import DropDown from '../components/filters/DropDown';
 import CheckBox from '../components/filters/CheckBox';
@@ -91,10 +91,13 @@ const handleCheckBoxChange = (index : any) => (event : any) => {
             />
           </div>
           <div style={{flex: 1}}>
-            <PriceSlider 
+            <Slider 
               handleChange={handlePriceChange}
-              maxPrice={maxPrice}
+              value={maxPrice}
               label={'Maximum Price'}
+              max_value={16}
+              min_value={0}
+              step_size={0.1}
             />
           </div>
           <div style={{flex: 1}}>
