@@ -12,25 +12,29 @@ function ChipAnalysis() {
   const [plotData, setPlotData] = useState([] as any);
   const [leagues, setLeagues] = useState([] as any);
   const [xAxis, setXAxis] = useState('Creigiau CC 2023/24 Season.')
+  const [password, setPassword] = useState('' as string)
 
   useEffect(() => {
 
     async function fetchData() {
       let data: any;
       try {
+
+        if (password === import.meta.env.VITE_API_KEY) {
           data = await CollectLeagueData();
           setLeagues([...new Set(data.map((item: any) => item.league_name))]);
           data = FilterDataByLeague(data, xAxis)
           const labels = data && data.map((item:any) => item.player_name);
           data = GenerateChipAnalysisPlot(data, labels)
           setPlotData(data)
+        }
       } catch (err) {
           console.error("Failed to collect player data:", err);
       }
   }
   fetchData()
 
-  }, [xAxis]);
+  }, [xAxis, password]);
 
   const handleChange = (e: any) => {
     setXAxis(e.target.value)
@@ -46,6 +50,19 @@ function ChipAnalysis() {
               filters={leagues}
               label={'Variable'}
             />
+        </div>
+        <div style={{flex: 1}}>
+          <form>
+            <div>
+              <label>Password:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </form>
         </div>
       </div>
       <div>
