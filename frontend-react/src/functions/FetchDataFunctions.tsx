@@ -1,6 +1,8 @@
 export async function CollectPlayerData() {
     try {
-        const response = await fetch('http://localhost:8000/players?api_key=wru12!', {
+        const api_key = import.meta.env.VITE_API_KEY;
+        const api_url = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${api_url}/players?api_key=${api_key}`, {
             headers: {
                 Accept: "application/json"
             }
@@ -15,7 +17,9 @@ export async function CollectPlayerData() {
 
 export async function CollectLeagueData() {
     try {
-        const response = await fetch('http://localhost:8000/leagues?api_key=wru12!', {
+        const api_key = import.meta.env.VITE_API_KEY;
+        const api_url = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${api_url}/leagues?api_key=${api_key}`, {
             headers: {
                 Accept: "application/json"
             }
