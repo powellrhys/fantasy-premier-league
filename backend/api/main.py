@@ -47,7 +47,7 @@ def read_league_data(api_key: str = None):
         cnxn, _ = connect_to_database()
         leagues_df = pd.read_sql('Select * from fpl_league_data', cnxn)
 
-        return JSONResponse(status_code=200, content=leagues_df.to_dict())
+        return JSONResponse(status_code=200, content=leagues_df.to_dict('records'))
 
     # Raise exception if authentication has failed
     else:
@@ -84,7 +84,7 @@ def read_league_table(api_key: str = None):
         premier_league_table = pd.read_sql('Select * from fpl_premier_league_table', cnxn) \
             .set_index('Position')
 
-        return JSONResponse(status_code=200, content=premier_league_table.to_dict())
+        return JSONResponse(status_code=200, content=premier_league_table.to_dict('records'))
 
     # Raise exception if authentication has failed
     else:

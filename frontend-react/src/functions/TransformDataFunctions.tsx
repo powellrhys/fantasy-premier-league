@@ -41,6 +41,18 @@ export function CollectTopResults(
     return top_ten
 }
 
+export function FilterDataByLeague(
+    data: any,
+    league: string
+) {
+    const filteredData = data.filter(function(item: any) {
+        return item.league_name == league   
+    })
+
+    return filteredData
+
+}
+
 export function FilterDataByPrice(
     data: any,
     maxPrice: number
@@ -50,6 +62,31 @@ export function FilterDataByPrice(
       )
 
     return filterd_data
+}
+
+export function GenerateChipAnalysisPlot(
+    filteredData: any,
+    labels: any
+) {
+    const plotData = [{
+        labels: labels,
+        datasets: [
+        {
+            label: 'Free Hit', 
+            data: filteredData && filteredData.map((item:any) => item.free_hit)
+        },
+        {
+            label: 'Triple Captain', 
+            data: filteredData && filteredData.map((item:any)  => item.triple_c)
+        },
+        {
+            label: 'Bench Boost', 
+            data: filteredData && filteredData.map((item:any)  => item.bench_boost)
+        }
+        ]
+    }]
+    
+    return plotData
 }
 
 export function GenerateGoalKepperBarPlot(

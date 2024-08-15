@@ -80,16 +80,16 @@ function GoalKeeperAnalysis() {
               />
             </div>
             <div style={{flex: 1}}>
-            <Slider 
-              handleChange={handleSliderChange}
-              value={dataPoints}
-              label={'Number of Data Points'}
-              max_value={20}
-              min_value={0}
-              step_size={1}
-            />
+              <Slider 
+                handleChange={handleSliderChange}
+                value={dataPoints}
+                label={'Number of Data Points'}
+                max_value={20}
+                min_value={0}
+                step_size={1}
+              />
           </div>
-          </div>
+        </div>
       </div>
       <div>
           {plotData.length > 0 && <BarPlot data={plotData} stacked={false} />}
