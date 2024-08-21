@@ -1,4 +1,4 @@
-from api_functions import connect_to_database
+# from api_functions import connect_to_database
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 import pandas as pd
 import warnings
 import uvicorn
+import pyodbc
 import os
+
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import FileResponse
 
 # Ignore warnings
 warnings.filterwarnings("ignore")
@@ -23,21 +27,30 @@ origins = [
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Define Root Endpoint
-@app.get("/")
-async def read_root():
-    content = {"message": "Fantasy Premier League Fast API Application"}
-    return JSONResponse(status_code=200, content=content)
+def connect_to_database():
+
+    server = os.getenv('sql_server_name')
+    database = os.getenv('sql_server_database')
+    username = os.getenv('sql_server_username')
+    password = os.getenv('sql_server_password')
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                          'SERVER=' + server + ';'
+                          'DATABASE=' + database + ';'
+                          'UID=' + username + ';'
+                          'PWD=' + password)
+    cursor = cnxn.cursor()
+
+    return cnxn, cursor
 
 
 # Define league data endpoint
-@app.get("/leagues")
+@app.get("/api/leagues")
 def read_league_data(api_key: str = None):
 
     # Authenticate request
@@ -55,7 +68,7 @@ def read_league_data(api_key: str = None):
 
 
 # Define player data endpoint
-@app.get("/players")
+@app.get("/api/players")
 def read_player_data(api_key: str = None):
 
     # Authenticate request
@@ -73,7 +86,7 @@ def read_player_data(api_key: str = None):
 
 
 # Define league table data endpoint
-@app.get("/league-table")
+@app.get("/api/league-table")
 def read_league_table(api_key: str = None):
 
     # Authenticate request
@@ -89,6 +102,23 @@ def read_league_table(api_key: str = None):
     # Raise exception if authentication has failed
     else:
         raise HTTPException(status_code=403, detail="Authentication failed")
+
+
+# Path to the frontend build directory
+frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend-react', 'dist')
+
+# Mount the assets directory to serve static files
+app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist_path, 'assets')), name="assets")
+
+# Serve the index.html on the root path
+@app.get("/")
+async def serve_index():
+    return FileResponse(os.path.join(frontend_dist_path, "index.html"))
+
+# Serve index.html for all other paths (for React Router support)
+@app.get("/{path:path}")
+async def serve_any(path: str):
+    return FileResponse(os.path.join(frontend_dist_path, "index.html"))
 
 
 if __name__ == '__main__':

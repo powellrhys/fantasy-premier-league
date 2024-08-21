@@ -1,4 +1,4 @@
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, ChartOptions } from 'chart.js';
 import {Scatter} from 'react-chartjs-2'
 import "./ScatterPlot.css"
 
@@ -19,7 +19,7 @@ export default function ScatterPlot(
         'selected_by_percent': 'Selected by (%)',
         }
 
-    const options = {
+    const options: ChartOptions<'scatter'> = {
         plugins: {
             tooltip: {
                 callbacks: {
