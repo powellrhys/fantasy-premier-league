@@ -1,5 +1,4 @@
-name: Build & Push Container - Frontend - React
-
+name: Build & Push - React Frontend
 on:
   workflow_dispatch:
   pull_request:
