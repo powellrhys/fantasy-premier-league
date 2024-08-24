@@ -52,6 +52,6 @@ body {
 
 .active-link {
     text-decoration: none;
-    color: black; /* Or whatever you prefer */
-    border-bottom: 4px solid #e90052; /* The border you want when active */
+    color: black;
+    border-bottom: 4px solid #e90052;
   }

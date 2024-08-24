@@ -147,5 +147,4 @@ export function TogglePositionData(data:any, positionToggle:any) {
     }
 
     return activeItems
-
   }
