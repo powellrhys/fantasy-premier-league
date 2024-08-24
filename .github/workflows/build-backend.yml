@@ -1,4 +1,4 @@
-name: Build & Push Container - Backend
+name: Build & Push - Backend
 
 on:
   workflow_dispatch:
