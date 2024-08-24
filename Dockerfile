@@ -1,20 +1,30 @@
-# Stage 1: Build React frontend
-FROM node:18-alpine as build-frontend
+# Stage 1: Build the React application
+FROM node:18 AS build
 
-# Set the working directory for frontend
-WORKDIR /frontend
+# Set working directory
+WORKDIR /app
 
-# Copy package.json and install frontend dependencies
-COPY ./frontend-react/package.json ./frontend-react/package-lock.json ./
+# Copy package.json and package-lock.json for frontend
+COPY frontend-react/package*.json ./
+
+# Install frontend dependencies
 RUN npm install
 
 # Copy the entire frontend code and build the React app
-COPY ./frontend-react/ ./
+COPY frontend-react/ ./
 RUN npm run build
 
-# Stage 2: Build Python backend
-FROM python:3.10-slim
+# Stage 2: Build Python backend and include the React build
+FROM python:3.11-slim
 
+# Set working directory for backend
+WORKDIR /app
+
+# Copy requirements file and install dependencies
+COPY backend/api/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional dependencies
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
         apt-transport-https \
@@ -29,23 +39,14 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/*
 
-# Set the working directory for backend
-WORKDIR /app
-
-# Copy backend requirements and install Python dependencies
-COPY ./backend/api/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the backend code
-COPY ./backend/ .
+# Copy FastAPI application code
+COPY backend /app/backend
 
 # Copy the built React frontend from the previous stage
-COPY --from=build-frontend /frontend/dist /app/frontend/dist
+COPY --from=build /app/dist /app/frontend-react/dist
 
-# Expose the necessary port
+# Expose port 8000 for FastAPI
 EXPOSE 8000
 
-# WORKDIR /app/api
-
-# Run FastAPI with Uvicorn, serving both the API and the React frontend
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run FastAPI with Uvicorn
+CMD ["uvicorn", "backend.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

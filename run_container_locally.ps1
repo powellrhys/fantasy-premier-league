@@ -4,7 +4,7 @@ param (
 )
 
 if ($build) {
-    docker build -t fpl-frontend -f frontend/Dockerfile .
+    docker build -t fpl-frontend .
 }
 
 # Empty array to store environmental variables
@@ -21,16 +21,18 @@ get-content .env | foreach {
 $leagues = $environment_variables_array[0]
 $manager_id = $environment_variables_array[1]
 $password = $environment_variables_array[2]
-$sql_server_name = $environment_variables_array[3]
-$sql_server_database = $environment_variables_array[4]
-$sql_server_username = $environment_variables_array[5]
-$sql_server_password = $environment_variables_array[6]
+$api_url = $environment_variables_array[3]
+$sql_server_name = $environment_variables_array[4]
+$sql_server_database = $environment_variables_array[5]
+$sql_server_username = $environment_variables_array[6]
+$sql_server_password = $environment_variables_array[7]
 
 # Run Docker Container
-docker run -p 8501:8501 `
+docker run -p 8000:8000 `
     -e leagues=$leagues `
     -e manager_id=$manager_id `
     -e password=$password `
+    -e api_url=$api_url `
     -e sql_server_name=$sql_server_name `
     -e sql_server_database=$sql_server_database `
     -e sql_server_username=$sql_server_username `
