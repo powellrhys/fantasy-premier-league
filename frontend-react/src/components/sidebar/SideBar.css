@@ -1,0 +1,45 @@
+/* .hide-container {
+    display: none;
+}
+
+.show-container {
+    flex: 20%;
+}
+
+.left-content {
+    flex: 1;
+    transition: flex 0.3s;
+    padding: 20px;
+    background-color: #eaeaea;
+    overflow: hidden;
+  }
+  
+.left-content.with-panel {
+  flex: 80%;
+}
+
+.left-content.without-panel {
+  flex: 1;
+}
+
+.drop-down {
+  background-color: #38003c; 
+  border: black;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.test:hover {
+  background-color: aquamarine;
+}
+
+.sidebar-container {
+  background-color: white;
+} */

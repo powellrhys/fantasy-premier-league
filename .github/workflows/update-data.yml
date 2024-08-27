@@ -5,6 +5,10 @@ on:
   pull_request:
     types:
       - opened
+  push:
+    branches:
+      - main
+      - feature/*
   schedule:
     - cron: "0 0 * * *"
 

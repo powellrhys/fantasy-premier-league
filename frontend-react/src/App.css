@@ -1,0 +1,9 @@
+* {
+  text-align: center;
+  font-family: 'Verdana'
+}
+
+body {
+  overflow: hidden;
+  background-color: rgba(214, 214, 214, 0.662);
+}
