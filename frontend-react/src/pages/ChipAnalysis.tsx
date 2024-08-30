@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import BarPlot from '../components/charts/BarPlot';
 import DropDown from '../components/filters/DropDown';
 
-import { CollectLeagueData } from '../functions/FetchDataFunctions';
+import {
+  CollectLeagueData,
+  CollectAPICredentials
+} from '../functions/FetchDataFunctions';
 import { 
   FilterDataByLeague,
   GenerateChipAnalysisPlot 
@@ -11,17 +14,20 @@ import {
 function ChipAnalysis() {
   const [plotData, setPlotData] = useState([] as any);
   const [leagues, setLeagues] = useState([] as any);
-  const [xAxis, setXAxis] = useState('Creigiau CC 2023/24 Season.')
+  const [xAxis, setXAxis] = useState('' as string)
   const [password, setPassword] = useState('' as string)
 
   useEffect(() => {
 
     async function fetchData() {
       let data: any;
+      let endpoint_credentials: any;
       try {
 
-        if (password === import.meta.env.VITE_API_KEY) {
-          data = await CollectLeagueData();
+        endpoint_credentials = await CollectAPICredentials(password);
+
+        if (endpoint_credentials.authenticated) {
+          data = await CollectLeagueData(endpoint_credentials);
           setLeagues([...new Set(data.map((item: any) => item.league_name))]);
           data = FilterDataByLeague(data, xAxis)
           const labels = data && data.map((item:any) => item.player_name);

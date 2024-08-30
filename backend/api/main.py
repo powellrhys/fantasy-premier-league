@@ -20,8 +20,8 @@ warnings.filterwarnings("ignore")
 load_dotenv()
 
 origins = [
-    "http://localhost:5173",
-    "http://localhost:8000"
+    "http://localhost:8000",
+    os.getenv('api_url')
 ]
 
 # Spin up Fast API application
@@ -48,6 +48,22 @@ def connect_to_database():
     cursor = cnxn.cursor()
 
     return cnxn, cursor
+
+# Define frontend secrets endpoint
+@app.get("/api/credentials")
+def collect_frontend_secrets(authentication_key: str = None):
+
+    json_response = {
+        'api_url': os.getenv('api_url'),
+        'api_key': os.getenv('api_key'),
+        'authenticated': False
+    }
+
+    if authentication_key == os.getenv('dashboard_key'):
+
+        json_response['authenticated'] = True
+
+    return json_response
 
 
 # Define league data endpoint
