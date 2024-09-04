@@ -5,7 +5,10 @@ import ScatterPlot from '../components/charts/ScatterPlot';
 import DropDown from '../components/filters/DropDown';
 import CheckBox from '../components/filters/CheckBox';
 
-import { CollectPlayerData } from '../functions/FetchDataFunctions';
+import {
+  CollectPlayerData,
+  CollectAPICredentials
+} from '../functions/FetchDataFunctions';
 import {
   MapDataToAxes,
   FilterDataByPrice,
@@ -42,8 +45,10 @@ function PlayerValue() {
   useEffect(() => {
     async function fetchData() {
       let data: any;
+      let endpoint_credentials: any
       try {
-          data = await CollectPlayerData();
+          endpoint_credentials = await CollectAPICredentials()
+          data = await CollectPlayerData(endpoint_credentials);
           data = MapDataToAxes(data, xAxis, 'total_points')
           data = FilterDataByPrice(data, maxPrice)
           data = GeneratePlayerScatterPlot(data)

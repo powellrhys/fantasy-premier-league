@@ -4,7 +4,10 @@ import DropDown from '../components/filters/DropDown';
 import Slider from '../components/filters/Slider';
 import '../components/sidebar/SideBar.css'
 
-import { CollectPlayerData } from '../functions/FetchDataFunctions';
+import { 
+  CollectPlayerData,
+  CollectAPICredentials
+} from '../functions/FetchDataFunctions';
 import {
   MapDataToAxes,
   FiterDataByPosition,
@@ -36,8 +39,10 @@ function GoalKeeperAnalysis() {
 
     async function fetchData() {
       let data: any;
+      let endpoint_credentials: any
       try {
-          data = await CollectPlayerData();
+          endpoint_credentials = await CollectAPICredentials();
+          data = await CollectPlayerData(endpoint_credentials);
           data = MapDataToAxes(data, 'second_name', yAxis)
           data = FiterDataByPosition(data, 'Goalkeeper')
           data = OrderDatabyMetric(data, 'y')
