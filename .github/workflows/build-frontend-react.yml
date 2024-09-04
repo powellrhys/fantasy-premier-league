@@ -50,11 +50,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Build image: ${{ github.repository }}-frontend"
+      - name: "Build image: ${{ github.repository }}-frontend-react"
         working-directory: './'
         run: docker build -f Dockerfile -t $REGISTRY/$IMAGE_NAME-frontend-react .
 
-      - name: Push ${{ github.repository }}-frontend to GitHub container registry
+      - name: Push ${{ github.repository }}-frontend-react to GitHub container registry
         run: |
           docker push $REGISTRY/$IMAGE_NAME-frontend-react:latest
 
@@ -65,7 +65,7 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Push ${{ github.repository }}-frontend to DockerHub Container registry
+      - name: Push ${{ github.repository }}-frontend-react to DockerHub Container registry
         run: |
           docker tag $REGISTRY/$IMAGE_NAME-frontend-react:latest $IMAGE_NAME-frontend-react:latest
           docker push $IMAGE_NAME-frontend-react
