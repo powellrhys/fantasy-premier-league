@@ -54,7 +54,7 @@ def update_player_table(cnxn, cursor, player_df):
     cnxn.commit()
 
     # Insert Dataframe into SQL Server:
-    for index, row in player_df.iterrows():
+    for _, row in player_df.iterrows():
         cursor.execute(f"INSERT INTO fpl_player_data ({','.join(list(player_df.columns))}) "
                        f"values({','.join(['?'] * len(list(player_df.columns)))})",
                        row.id,
@@ -96,6 +96,7 @@ def update_leagues_table(cnxn, cursor, league_df):
             last_rank int,
             rank_sort int,
             total int,
+            entry int,
             entry_name varchar(255),
             bench_boost int,
             free_hit int,
@@ -108,7 +109,7 @@ def update_leagues_table(cnxn, cursor, league_df):
     cnxn.commit()
 
     # Insert Dataframe into SQL Server:
-    for index, row in league_df.iterrows():
+    for _, row in league_df.iterrows():
         cursor.execute(f"INSERT INTO fpl_league_data ({','.join(list(league_df.columns))}) "
                        f"values({','.join(['?'] * len(list(league_df.columns)))})",
                        row.id,
@@ -118,11 +119,40 @@ def update_leagues_table(cnxn, cursor, league_df):
                        row.last_rank,
                        row.rank_sort,
                        row.total,
+                       row.entry,
                        row.entry_name,
                        row.bench_boost,
                        row.free_hit,
                        row.triple_c,
                        row.league_name
+                       )
+    cnxn.commit()
+
+
+def update_manager_squad_data(cnxn, cursor, manager_squad_df):
+
+    cursor.execute("drop table if exists [dbo].[fpl_manager_squad_data]")
+
+    create_table_query = """
+        CREATE TABLE fpl_manager_squad_data (
+            entry int,
+            manager_name varchar(255),
+            league_name varchar(255),
+            player_name varchar(255),
+        );
+        """
+
+    cursor.execute(create_table_query)
+    cnxn.commit()
+
+    # Insert Dataframe into SQL Server:
+    for _, row in manager_squad_df.iterrows():
+        cursor.execute(f"INSERT INTO fpl_manager_squad_data ({','.join(list(manager_squad_df.columns))}) "
+                       f"values({','.join(['?'] * len(list(manager_squad_df.columns)))})",
+                       row.entry,
+                       row.manager_name,
+                       row.league_name,
+                       row.player_name,
                        )
     cnxn.commit()
 
@@ -150,7 +180,7 @@ def update_premier_league_table(cnxn, cursor, premier_league_table):
     cnxn.commit()
 
     # Insert Dataframe into SQL Server:
-    for index, row in premier_league_table.iterrows():
+    for _, row in premier_league_table.iterrows():
         cursor.execute(f"INSERT INTO fpl_premier_league_table ({','.join(list(premier_league_table.columns))}) "
                        f"values({','.join(['?'] * len(list(premier_league_table.columns)))})",
                        row.Position,
