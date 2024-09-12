@@ -131,7 +131,7 @@ def update_leagues_table(cnxn, cursor, league_df):
 
 def update_manager_squad_data(cnxn, cursor, manager_squad_df):
 
-    # Drop table if exists 
+    # Drop table if exists
     cursor.execute("drop table if exists [dbo].[fpl_manager_squad_data]")
 
     # Recreate table in sql database
