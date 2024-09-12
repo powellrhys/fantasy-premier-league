@@ -2,7 +2,8 @@ from functions_data_collection import \
     collect_player_data, \
     collect_league_data, \
     collect_premier_league_table, \
-    collect_manager_squad_data
+    collect_manager_squad_data, \
+    collect_current_gameweek
 from functions_database import \
     connect_to_database, \
     update_player_table, \
@@ -42,7 +43,8 @@ update_leagues_table(cnxn, cursor, league_df)
 logger.info('League Data updated in SQL')
 
 logger.info('Updating Manager Squad Data in SQL...')
-manager_squad_df = collect_manager_squad_data(cnxn, cursor)
+gameweek = collect_current_gameweek()
+manager_squad_df = collect_manager_squad_data(cnxn, gameweek)
 update_manager_squad_data(cnxn, cursor, manager_squad_df)
 logger.info('Manager Squad Data updated in SQL')
 

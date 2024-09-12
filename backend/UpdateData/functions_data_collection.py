@@ -7,6 +7,21 @@ import os
 
 load_dotenv()
 
+def collect_current_gameweek():
+
+    # Endpoint url
+    url = 'https://fantasy.premierleague.com/api/bootstrap-static/'
+
+    # Read in data from endpoint
+    r = requests.get(url)
+    gameweeks = r.json()['events']
+
+    # Collect current gamewek
+    gw = [gw['id'] for gw in gameweeks if gw['is_current']][0]
+
+    return gw
+
+
 def collect_player_data():
 
     # Endpoint url
@@ -124,8 +139,9 @@ def collect_league_data():
 
     return league_df
 
-def collect_manager_squad_data(cnxn, cursor):
+def collect_manager_squad_data(cnxn, gameweek):
 
+    # Define query to extract data from the fpl_leage_data table
     query = '''
         select
             entry,
@@ -135,16 +151,23 @@ def collect_manager_squad_data(cnxn, cursor):
             fpl_league_data
     '''
 
+    # Execute sql query
     manager_squad_df = pd.read_sql(query, cnxn)
 
+    # Collect list of unique manager ids
     unique_managers = list(set(manager_squad_df['entry'].tolist()))
 
+    # Define empty squad dataframe
     squad_df = pd.DataFrame(columns=['manager_id', 'squad'])
+
+    # Iterate through manager ids
     for manager_id in unique_managers:
 
-        single_squad_df = collect_single_manager_squad_data(cnxn, manager_id, 3)
+        # Collect squad data for specific manager
+        single_squad_df = collect_single_manager_squad_data(cnxn, manager_id, gameweek)
         squad_df = pd.concat([squad_df, single_squad_df])
 
+    # Join squad data to manager data
     squad_df = squad_df.reset_index().drop(columns=['index'])
     manager_squad_df = manager_squad_df \
         .merge(squad_df, left_on='entry', right_on='manager_id', how='left') \
@@ -159,16 +182,20 @@ def collect_manager_squad_data(cnxn, cursor):
 
 def collect_single_manager_squad_data(cnxn, manager_id, gw):
 
+    # Define gameweek squad url
     url = f'https://fantasy.premierleague.com/api/entry/{manager_id}/event/{gw}/picks/'
 
     # Collect data from endpoint
     r = requests.get(url)
     json = r.json()
 
+    # Iterate through squad picks - collect player ids
     pick_ids = [pick['element'] for pick in json['picks']]
 
+    # Convert ids to player names
     squad = [collect_player_name_by_id(cnxn, pick_id) for pick_id in pick_ids]
 
+    # Create squad dataframe
     squad_df = pd.DataFrame(
         {'manager_id': [manager_id] * 15,
          'squad': squad})
@@ -178,6 +205,7 @@ def collect_single_manager_squad_data(cnxn, manager_id, gw):
 
 def collect_player_name_by_id(cnxn, player_id):
 
+    # Define query
     query = f'''
         select
             second_name
@@ -187,6 +215,7 @@ def collect_player_name_by_id(cnxn, player_id):
             id = {player_id}
     '''
 
+    # Collect player name from table
     player_name = pd.read_sql(query, cnxn).iloc[0]['second_name']
 
     return player_name

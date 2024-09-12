@@ -131,8 +131,10 @@ def update_leagues_table(cnxn, cursor, league_df):
 
 def update_manager_squad_data(cnxn, cursor, manager_squad_df):
 
+    # Drop table if exists 
     cursor.execute("drop table if exists [dbo].[fpl_manager_squad_data]")
 
+    # Recreate table in sql database
     create_table_query = """
         CREATE TABLE fpl_manager_squad_data (
             entry int,
@@ -142,6 +144,7 @@ def update_manager_squad_data(cnxn, cursor, manager_squad_df):
         );
         """
 
+    # Execute create table query
     cursor.execute(create_table_query)
     cnxn.commit()
 
