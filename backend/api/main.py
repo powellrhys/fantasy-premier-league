@@ -102,6 +102,24 @@ def read_player_data(api_key: str = None):
         raise HTTPException(status_code=403, detail="Authentication failed")
 
 
+# Define manager squad data endpoint
+@app.get("/api/manager_squad")
+def read_manager_squad_data(api_key: str = None):
+
+    # Authenticate request
+    if api_key == os.getenv('password'):
+
+        # Collect manager squad data
+        cnxn, _ = connect_to_database()
+        manager_squad_data_df = pd.read_sql('Select * from fpl_manager_squad_data', cnxn)
+
+        return JSONResponse(status_code=200, content=manager_squad_data_df.to_dict('records'))
+
+    # Raise exception if authentication has failed
+    else:
+        raise HTTPException(status_code=403, detail="Authentication failed")
+
+
 # Define league table data endpoint
 @app.get("/api/league-table")
 def read_league_table(api_key: str = None):
