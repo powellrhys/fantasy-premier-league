@@ -112,8 +112,34 @@ def read_manager_squad_data(api_key: str = None):
         # Collect manager squad data
         cnxn, _ = connect_to_database()
         manager_squad_data_df = pd.read_sql('Select * from fpl_manager_squad_data', cnxn)
+        manager_squad_data_json = manager_squad_data_df.to_dict('records')
 
-        return JSONResponse(status_code=200, content=manager_squad_data_df.to_dict('records'))
+        # Collect a list of unique leagues
+        leagues = manager_squad_data_df['league_name'].unique().tolist()
+
+        # Loop through leagues to collect data
+        response = {}
+        for league in leagues:
+
+            # Collect a list of unique managers in every league
+            managers = manager_squad_data_df[manager_squad_data_df['league_name'] == league]['manager_name'] \
+                .unique().tolist()
+
+            # Collect manager squad data
+            manager_json = {}
+            for manager_name in managers:
+                manager_squad_json = list(set([manager['player_name'] for manager in
+                                               manager_squad_data_json if
+                                               manager['manager_name'] == manager_name]))
+                manager_squad_json.sort()
+
+                # Append squad data to response
+                manager_json[manager_name] = manager_squad_json
+
+            # Append league data to response
+            response[league] = manager_json
+
+        return JSONResponse(status_code=200, content=response)
 
     # Raise exception if authentication has failed
     else:
