@@ -8,8 +8,6 @@ class Variables:
     """
     A class to manage environment variables and configuration settings for the app.
     """
-    load_dotenv()
-
     def __init__(self, source: str = "backend") -> None:
         """
         Initialize Variables with environment or Streamlit secrets based on the source.
@@ -19,6 +17,7 @@ class Variables:
                                     "backend" loads from environment variables,
                                     otherwise loads from Streamlit secrets. Defaults to "backend".
         """
+        load_dotenv()
         # Shared variables
         if source == "backend":
             self.blob_connection_string = os.getenv('blob_connection_string')
@@ -28,7 +27,8 @@ class Variables:
             self.blob_storage_connection_string = st.secrets["general"]["blob_storage_connection_string"]
 
         # Fantasy Premier League variables
-        self.league_ids = [int(id) for id in os.getenv(key="league_ids", default=[]).split(", ")]
+        league_ids_str = os.getenv("league_ids", "")
+        self.league_ids = [int(id) for id in league_ids_str.split(", ")] if league_ids_str else []
 
         # Privileged Users
         self.privileged_users = [str(id) for id in st.secrets["general"]["privileged_users"].split(", ")]

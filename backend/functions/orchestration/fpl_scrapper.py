@@ -39,7 +39,7 @@ class FPLScrapper(BlobStorage):
 
         # Export data
         self.logger.info('Writing player data to blob storage...')
-        BlobStorage().upload_dataframe(df=player_df, file_name='player_data.csv')
+        self.upload_dataframe(df=player_df, file_name='player_data.csv')
         self.logger.info('Player data written to blob storage \n')
 
         # Iterate through each league and collect data
@@ -54,5 +54,5 @@ class FPLScrapper(BlobStorage):
 
         # Export league data
         self.logger.info('Writing managerial league data to blob storage...')
-        BlobStorage().upload_dataframe(df=all_league_df, file_name='leagues_data.csv')
+        self.upload_dataframe(df=all_league_df, file_name='leagues_data.csv')
         self.logger.info('Managerial league data written to blob storage \n')
