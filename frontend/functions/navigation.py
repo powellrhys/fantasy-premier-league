@@ -4,6 +4,13 @@ import streamlit as st
 
 def get_navigation(vars: Variables) -> st.navigation:
     """
+    Create and return a Streamlit navigation object with pages for the app.
+
+    Args:
+        vars (Variables): An instance containing app configuration variables.
+
+    Returns:
+        st.navigation: A Streamlit navigation object with structured pages.
     """
     # Construct pages dictionary
     pages = {

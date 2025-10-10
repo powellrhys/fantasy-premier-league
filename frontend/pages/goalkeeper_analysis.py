@@ -11,4 +11,5 @@ configure_page_config(repository_name='fantasy-premier-league',
 # Read player data from external source
 df = BlobStorage().read_csv_from_blob(file_name="player_data.csv")
 
+# Render goalkeeper page
 render_position_analysis_page(df=df, is_goalkeeper=True)

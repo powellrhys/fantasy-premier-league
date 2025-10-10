@@ -6,11 +6,18 @@ import os
 
 class Variables:
     """
+    A class to manage environment variables and configuration settings for the app.
     """
     load_dotenv()
 
     def __init__(self, source: str = "backend") -> None:
         """
+        Initialize Variables with environment or Streamlit secrets based on the source.
+
+        Args:
+            source (str, optional): Determines where to load configuration from.
+                                    "backend" loads from environment variables,
+                                    otherwise loads from Streamlit secrets. Defaults to "backend".
         """
         # Shared variables
         if source == "backend":

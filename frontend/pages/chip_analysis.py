@@ -24,6 +24,7 @@ if st.user.is_logged_in and st.user["name"] in Variables().privileged_users:
     render_chip_analysis_page(leagues_df=leagues_df)
 
 else:
+    # Handle unauthenticated user
     st.error(
         f"""
         **{st.user["name"]}** does not have access to this page!!
