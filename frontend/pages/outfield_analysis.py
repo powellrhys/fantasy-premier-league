@@ -1,5 +1,5 @@
 # Import dependencies
-from pages.frontend_sections.player_analysis_page import render_player_analysis_page
+from frontend.pages.frontend_sections.position_analysis_page import render_position_analysis_page
 from streamlit_components.ui_components import configure_page_config
 from shared.functions import BlobStorage
 
@@ -11,5 +11,4 @@ configure_page_config(repository_name='fantasy-premier-league',
 # Read player data from external source
 df = BlobStorage().read_csv_from_blob(file_name="player_data.csv")
 
-# Render player analysis section
-render_player_analysis_page(df=df)
+render_position_analysis_page(df=df, is_goalkeeper=False)
