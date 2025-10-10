@@ -1,6 +1,6 @@
 # name: Update Data
 
-# on: 
+# on:
 #   workflow_dispatch:
 #   push:
 #     branches:
@@ -9,7 +9,7 @@
 #   schedule:
 #     - cron: "0 0 * * *"
 
-# jobs:  
+# jobs:
 #   update-data:
 #     name: Update Data
 #     runs-on: ubuntu-latest
