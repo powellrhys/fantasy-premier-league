@@ -1,0 +1,29 @@
+name: Flyway Migration
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+  push:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Flyway migrations
+        uses: docker://flyway/flyway:latest
+        with:
+          args: >
+            -url=${{ secrets.SQL_SERVER_NAME }}
+            -user=${{ secrets.SQL_SERVER_USERNAME }}
+            -password=${{ secrets.SQL_SERVER_PASSWORD }}
+            -locations=filesystem:./sql
+            migrate
