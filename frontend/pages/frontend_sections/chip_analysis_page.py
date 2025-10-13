@@ -40,14 +40,15 @@ def render_chip_analysis_page(leagues_df: pd.DataFrame) -> None:
     df_melted = pd.melt(league_data_df, id_vars=['player_name', 'league_rank'],
                         value_vars=['Bench Boost', 'Free Hit', 'Triple Captain', 'Wildcard'])
 
-    # Plot bar chart
-    st.plotly_chart(PlotlyPlotter(
-        df=df_melted,
-        x='player_name',
-        y='value',
-        color='variable',
-        labels={
-            "player_name": "Name",
-            "value": "Chips Played",
-            "variable": 'Chips'
-        }).plot_bar())
+    # Render plot within container
+    with st.container():
+        st.plotly_chart(PlotlyPlotter(
+            df=df_melted,
+            x='player_name',
+            y='value',
+            color='variable',
+            labels={
+                "player_name": "Name",
+                "value": "Chips Played",
+                "variable": 'Chips'
+            }).plot_bar())

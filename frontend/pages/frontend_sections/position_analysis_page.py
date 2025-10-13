@@ -71,7 +71,7 @@ def render_position_analysis_page(df: pd.DataFrame, is_goalkeeper: bool = False)
     fig.update_layout(showlegend=False)
     fig.update_traces(marker_line_color='black', marker_line_width=1)
 
-    with st.container(expanded=True):
+    with st.container():
 
         # Render plot
         st.plotly_chart(fig)

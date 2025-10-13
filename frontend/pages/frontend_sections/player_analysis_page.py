@@ -55,7 +55,7 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
     )
 
     # Render plot within expander
-    with st.container(expanded=True):
+    with st.container():
         st.plotly_chart(
             PlotlyPlotter(
                 df=top_df,
