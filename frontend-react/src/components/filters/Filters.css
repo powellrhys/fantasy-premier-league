@@ -1,9 +1,0 @@
-.filter-box {
-    display : flex;
-    flex-direction: column;
-    padding: 0px 40px;
-}
-
-.label {
-    margin-bottom: 2px;
-}
