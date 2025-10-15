@@ -1,6 +1,6 @@
 # Import dependencies
 from .database_connector import DatabaseConnector
-from database.models import Players
+from database.models import PlayerOverview
 import pandas as pd
 
 class PlayerRepository:
@@ -17,14 +17,14 @@ class PlayerRepository:
         """
         Writes player data from a DataFrame to the 'player' table.
         """
-        df.to_sql(name="player", con=self.engine, if_exists=if_exists, index=False)
+        df.to_sql(name="player_overview", con=self.engine, if_exists=if_exists, index=False)
 
     def read_dataframe(self) -> pd.DataFrame:
         """
         Reads all player data as a DataFrame.
         """
         # Define query and read from database table
-        query = "SELECT * FROM player"
+        query = "SELECT * FROM player_overview"
         return pd.read_sql(query, self.engine)
 
     def insert_players_orm(self, df: pd.DataFrame):
@@ -33,7 +33,7 @@ class PlayerRepository:
         """
         session = self.Session()
         try:
-            players = [Players(**row.to_dict()) for _, row in df.iterrows()]
+            players = [PlayerOverview(**row.to_dict()) for _, row in df.iterrows()]
             session.bulk_save_objects(players)
             session.commit()
         finally:
