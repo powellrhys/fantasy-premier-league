@@ -1,15 +1,15 @@
 # Import dependencies
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-import os
+from ..variables import Variables
+import sqlalchemy.orm.session
 
 class DatabaseConnector:
     """
     Handles database connection setup and provides access to the SQLAlchemy
     engine and session factory.
     """
-    def __init__(self) -> None:
+    def __init__(self, source: str = "Backend") -> None:
         """
         Initializes the database connector by:
           - Loading environment variables.
@@ -20,15 +20,14 @@ class DatabaseConnector:
             ValueError: If DATABASE_URL is not defined in the environment.
         """
         # Read in environmental variables
-        load_dotenv()
+        self.vars = Variables(source=source)
 
         # Define database URL variable and handle issues if value does not exist
-        self.database_url = os.getenv("DATABASE_URL")
-        if not self.database_url:
-            raise ValueError("DATABASE_URL not found in environment variables")
+        if not self.vars.database_connection_string:
+            raise ValueError("database_connection_string not found in environment variables")
 
         # Create SQLAlchemy engine and session factory
-        self.engine = create_engine(self.database_url)
+        self.engine = create_engine(self.vars.database_connection_string)
         self.Session = sessionmaker(bind=self.engine)
 
     def get_engine(self) -> Engine:
@@ -41,7 +40,7 @@ class DatabaseConnector:
         """
         return self.engine
 
-    def get_session(self) -> sessionmaker:
+    def get_session(self) -> sqlalchemy.orm.session:
         """
         Creates and returns a new SQLAlchemy session for ORM operations.
 

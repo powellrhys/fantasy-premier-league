@@ -57,7 +57,7 @@ class PlayerRepository:
         # Define sql session and write data to sql table
         session = self.Session()
         try:
-            players = [PlayerOverview(**row.to_dict()) for _, row in df.iterrows()]
+            players = [PlayerOverview(**row) for row in df.to_dict('records')]
             session.bulk_save_objects(players)
             session.commit()
         finally:

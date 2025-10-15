@@ -29,4 +29,4 @@ class PlayerOverview(Base):
     position = Column(String(50))
 
     def __repr__(self):
-        return f"<Player(id={self.id}, name={self.second_name}, team={self.team}, position={self.position})>"
+        return f"<PlayerOverview(id={self.id}, name={self.second_name}, team={self.team}, position={self.position})>"

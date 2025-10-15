@@ -56,7 +56,7 @@ class LeagueRepository:
         # Define sql session and write data to sql table
         session = self.Session()
         try:
-            leagues = [LeagueOverview(**row.to_dict()) for _, row in df.iterrows()]
+            leagues = [LeagueOverview(**row) for row in df.to_dict('records')]
             session.bulk_save_objects(leagues)
             session.commit()
         finally:

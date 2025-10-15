@@ -1,7 +1,8 @@
 # Import python and project dependencies
 from pages.frontend_sections.chip_analysis_page import render_chip_analysis_page
 from streamlit_components.ui_components import configure_page_config
-from shared.functions import BlobStorage, Variables
+from shared.functions import Variables
+from functions.data import collect_managerial_league_data
 import streamlit as st
 
 # Set page config
@@ -18,7 +19,7 @@ st.title("Chip Analysis")
 if st.user.is_logged_in and st.user["name"] in Variables().privileged_users:
 
     # Read in leagues_data from external source
-    leagues_df = BlobStorage().read_csv_from_blob(file_name="leagues_data.csv")
+    leagues_df = collect_managerial_league_data()
 
     # Render chip analysis section
     render_chip_analysis_page(leagues_df=leagues_df)

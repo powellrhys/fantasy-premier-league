@@ -15,7 +15,6 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-azure-storage-blob = "12.24.0"
 python-dotenv = "1.0.1"
 selenium = "4.25.0"
 streamlit = "1.46.0"

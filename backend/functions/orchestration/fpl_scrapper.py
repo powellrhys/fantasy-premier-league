@@ -7,7 +7,7 @@ import pandas as pd
 
 class FPLScrapper():
     """
-    A class to run the Fantasy Premier League data scraping workflow and store results in blob storage.
+    A class to run the Fantasy Premier League data scraping workflow and store results in a database.
     """
 
     def __init__(self) -> None:
@@ -16,8 +16,9 @@ class FPLScrapper():
         """
         self.logger = configure_logging()
         self.vars = Variables()
-        self.player_repository = PlayerRepository(db_connector=DatabaseConnector())
-        self.league_repository = LeagueRepository(db_connector=DatabaseConnector())
+        db_connector = DatabaseConnector()
+        self.player_repository = PlayerRepository(db_connector=db_connector)
+        self.league_repository = LeagueRepository(db_connector=db_connector)
 
     def run(self) -> None:
         """
