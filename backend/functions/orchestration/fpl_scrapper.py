@@ -40,9 +40,9 @@ class FPLScrapper():
         player_df = PlayerData().get_player_dataframe()
         self.logger.info(f'Data collected for {len(player_df)} players \n')
 
-        # self.logger.info("Writing player data to database...")
-        # self.player_repository.write_dataframe(df=player_df)
-        # self.logger.info("Player data written to sql \n")
+        self.logger.info("Writing player data to database...")
+        self.player_repository.write_dataframe(df=player_df)
+        self.logger.info("Player data written to sql \n")
 
         # Iterate through each league and collect data
         all_league_df = pd.DataFrame()
@@ -55,6 +55,6 @@ class FPLScrapper():
             all_league_df = pd.concat([all_league_df, league_df], ignore_index=True)
 
         # Export league data
-        self.logger.info("Writing league data to database...")
+        self.logger.info("Writing managerial league data to database...")
         self.league_repository.write_dataframe(df=all_league_df)
-        self.logger.info("League data written to sql \n")
+        self.logger.info("Managerial League data written to sql \n")
