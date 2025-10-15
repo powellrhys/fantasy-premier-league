@@ -54,7 +54,7 @@ jobs:
             -url=${{ secrets.SQL_SERVER_JDBC_URL }}
             -user=${{ secrets.SQL_SERVER_USERNAME }}
             -password=${{ secrets.SQL_SERVER_PASSWORD }}
-            -locations=filesystem:./sql
+            -locations=filesystem:./database/flyway
             -connectRetries=10
             migrate
 

@@ -1,5 +1,5 @@
 # Import python dependencies
-from .variables import Variables
+from .variables.variables import Variables
 from io import StringIO
 import pandas as pd
 

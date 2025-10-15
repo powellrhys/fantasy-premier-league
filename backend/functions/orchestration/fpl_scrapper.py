@@ -1,5 +1,6 @@
 # Import dependencies
 from shared.functions import BlobStorage, Variables
+from shared.functions.sql import DatabaseConnector, PlayerRepository
 from ..data import GameWeek, PlayerData, League
 from ..logging import configure_logging
 import pandas as pd
@@ -15,6 +16,7 @@ class FPLScrapper(BlobStorage):
         """
         self.logger = configure_logging()
         self.vars = Variables()
+        self.db_connection = DatabaseConnector()
 
     def run(self) -> None:
         """
@@ -37,10 +39,9 @@ class FPLScrapper(BlobStorage):
         player_df = PlayerData().get_player_dataframe()
         self.logger.info(f'Data collected for {len(player_df)} players \n')
 
-        # Export data
-        self.logger.info('Writing player data to blob storage...')
-        self.upload_dataframe(df=player_df, file_name='player_data.csv')
-        self.logger.info('Player data written to blob storage \n')
+        self.logger.info("Writing player data to database...")
+        PlayerRepository(db_connector=self.db_connection).write_dataframe(df=player_df)
+        self.logger.info("Plater data written to sql")
 
         # Iterate through each league and collect data
         all_league_df = pd.DataFrame()
@@ -52,7 +53,7 @@ class FPLScrapper(BlobStorage):
             league_df = League(league_id=league_id).collect_league_data()
             all_league_df = pd.concat([all_league_df, league_df], ignore_index=True)
 
-        # Export league data
-        self.logger.info('Writing managerial league data to blob storage...')
-        self.upload_dataframe(df=all_league_df, file_name='leagues_data.csv')
-        self.logger.info('Managerial league data written to blob storage \n')
+        # # Export league data
+        # self.logger.info('Writing managerial league data to blob storage...')
+        # self.upload_dataframe(df=all_league_df, file_name='leagues_data.csv')
+        # self.logger.info('Managerial league data written to blob storage \n')
