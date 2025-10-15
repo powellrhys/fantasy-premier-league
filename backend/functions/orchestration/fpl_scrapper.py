@@ -1,11 +1,11 @@
 # Import dependencies
+from shared.functions.sql import DatabaseConnector, PlayerRepository, LeagueRepository
 from shared.functions import BlobStorage, Variables
-from shared.functions.sql import DatabaseConnector, PlayerRepository
 from ..data import GameWeek, PlayerData, League
 from ..logging import configure_logging
 import pandas as pd
 
-class FPLScrapper(BlobStorage):
+class FPLScrapper():
     """
     A class to run the Fantasy Premier League data scraping workflow and store results in blob storage.
     """
@@ -16,7 +16,8 @@ class FPLScrapper(BlobStorage):
         """
         self.logger = configure_logging()
         self.vars = Variables()
-        self.db_connection = DatabaseConnector()
+        self.player_repository = PlayerRepository(db_connector=DatabaseConnector())
+        self.league_repository = LeagueRepository(db_connector=DatabaseConnector())
 
     def run(self) -> None:
         """
@@ -39,9 +40,9 @@ class FPLScrapper(BlobStorage):
         player_df = PlayerData().get_player_dataframe()
         self.logger.info(f'Data collected for {len(player_df)} players \n')
 
-        self.logger.info("Writing player data to database...")
-        PlayerRepository(db_connector=self.db_connection).write_dataframe(df=player_df)
-        self.logger.info("Plater data written to sql")
+        # self.logger.info("Writing player data to database...")
+        # self.player_repository.write_dataframe(df=player_df)
+        # self.logger.info("Plater data written to sql")
 
         # Iterate through each league and collect data
         all_league_df = pd.DataFrame()

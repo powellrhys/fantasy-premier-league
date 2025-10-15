@@ -1,7 +1,6 @@
+# Import dependencies
 from sqlalchemy import Column, Integer, String, DECIMAL
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from .base import Base
 
 class PlayerOverview(Base):
     __tablename__ = "player_overview"

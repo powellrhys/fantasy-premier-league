@@ -1,4 +1,5 @@
 USE [fantasy-premier-league]
+Go
 
 CREATE TABLE player_overview (
     id INT PRIMARY KEY,
@@ -24,3 +25,5 @@ CREATE TABLE player_overview (
     starts INTEGER,
     position VARCHAR(50)
 );
+
+Go
