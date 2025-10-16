@@ -4,11 +4,23 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/update-fpl-data.yml'
+      - 'backend/**'
+      - 'shared/**'
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/update-fpl-data.yml'
+      - 'backend/**'
+      - 'shared/**'
   schedule:
     - cron: "0 0 * * *"
+
+concurrency:
+  group: update-fpl-data
+  cancel-in-progress: false
 
 jobs:
   update-fpl-data:
@@ -45,7 +57,8 @@ jobs:
       - name: Install SQL Server ODBC driver
         run: |
           curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list 
+          curl -o /tmp/mssql-release.list https://packages.microsoft.com/config/ubuntu/22.04/prod.list
+          sudo tee /etc/apt/sources.list.d/mssql-release.list < /tmp/mssql-release.list
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install msodbcsql17 -y
           sudo apt-get install unixodbc-dev -y
@@ -73,7 +86,7 @@ jobs:
             --name $FIREWALL_RULE_NAME \
             --start-ip-address ${{ steps.ip.outputs.ip }} \
             --end-ip-address ${{ steps.ip.outputs.ip }}
-      
+
       # Delay to ensure enough time for firewall rule to be established
       - name: Wait for propagation
         run: sleep 60

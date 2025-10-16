@@ -18,7 +18,7 @@ class Variables:
         """
         load_dotenv()
         if source == "backend":
-            # Collect database connecting string from environmental variables
+            # Collect database connection string from environmental variables
             self.database_connection_string = os.getenv('database_connection_string')
 
             # Collect league ids for backend scrapping
