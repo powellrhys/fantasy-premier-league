@@ -15,7 +15,7 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
 
     Args:
         df (pd.DataFrame): A DataFrame containing player data, including columns such as
-                           'position', 'now_cost', 'total_points', 'second_name', and other relevant metrics.
+                           'position', 'now_cost', 'total_points', 'web_name', and other relevant metrics.
 
     Returns:
         None
@@ -61,12 +61,12 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
                 df=top_df,
                 x=metric,
                 y='total_points',
-                hover_data='second_name',
+                hover_data='web_name',
                 trendline='ols',
                 labels={
                     "total_points": "Total Points",
                     "position": "Position",
-                    "second_name": "Player Name",
+                    "web_name": "Player Name",
                     "now_cost": "Cost (£)",
                     "selected_by_percent": "Selected (%)",
                     "minutes": "Minutes"

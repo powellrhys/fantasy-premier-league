@@ -7,7 +7,7 @@ CREATE TABLE player_overview (
     team VARCHAR(100),
     element_type VARCHAR(50),
     selected_by_percent DECIMAL(5,2),
-    now_cost INTEGER,
+    now_cost DECIMAL(4,1),
     minutes INTEGER,
     transfers_in INTEGER,
     value_season DECIMAL(6,2),

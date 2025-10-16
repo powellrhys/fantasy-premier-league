@@ -16,7 +16,7 @@ if not st.user.is_logged_in:
 st.title("Chip Analysis")
 
 # If user logged in, render streamlit content
-if st.user.is_logged_in and st.user["name"] in Variables().privileged_users:
+if st.user.is_logged_in and st.user["name"] in Variables(source="frontend").privileged_users:
 
     # Read in leagues_data from external source
     leagues_df = collect_managerial_league_data()

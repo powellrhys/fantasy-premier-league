@@ -40,6 +40,9 @@ def render_chip_analysis_page(leagues_df: pd.DataFrame) -> None:
     df_melted = pd.melt(league_data_df, id_vars=['player_name', 'league_rank'],
                         value_vars=['Bench Boost', 'Free Hit', 'Triple Captain', 'Wildcard'])
 
+    # Convert boolean into integer ready for stacking plot
+    df_melted['value'] = df_melted['value'].astype(int)
+
     # Render plot within container
     with st.container():
         st.plotly_chart(PlotlyPlotter(
