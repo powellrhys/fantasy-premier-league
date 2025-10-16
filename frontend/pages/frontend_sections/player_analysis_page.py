@@ -33,7 +33,7 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
 
     # Render metric select box in second column
     with columns[1]:
-        metric = st.selectbox(label="Metric", options=["now_cost", "minutes", "selected_by_percent"])
+        metric = st.selectbox(label="Metric", options=["Now Cost", "Minutes", "Selected By Percent"])
 
     # Render top performers slider in third column
     with columns[-2]:
@@ -59,7 +59,7 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
         st.plotly_chart(
             PlotlyPlotter(
                 df=top_df,
-                x=metric,
+                x=metric.replace(" ", "_").lower(),
                 y='total_points',
                 hover_data='web_name',
                 trendline='ols',
