@@ -1,5 +1,6 @@
 # Import python and project dependencies
 from streamlit_components.ui_components import configure_page_config
+from functions.data import collect_player_data
 import streamlit as st
 
 # Set page config
@@ -35,3 +36,38 @@ with st.container(border=True):
         Fantasy Premier League competition.
         """
     )
+
+st.title("Current FPL Dream Team")
+
+# Read player data from external source
+df = collect_player_data()
+df = df[df["in_dreamteam"]]
+df["photo"] = df["photo"] = "https://resources.premierleague.com/premierleague25/photos/players/110x140/" + df["photo"]
+df["photo"] = df["photo"].str.replace(".jpg", ".png")
+df = df.sort_values(by="total_points", ascending=False)
+df = df.reset_index()
+
+with st.container(border=True):
+    player_cols = st.columns(11)
+
+    for i, row in df.iterrows():
+
+        player_name = row["web_name"]
+        photo_url = row["photo"]
+        total_points = row["total_points"]
+
+        with player_cols[i % 11]:
+            st.markdown(
+                f"""
+                <div style="text-align:center">
+                    <span style="font-weight:bold">{row["web_name"]}</span><br>
+                    <span>{row["team"]}</span><br>
+                    <img src="{row["photo"]}" width="100"><br><br>
+                    <span>Total points: <b>{row["total_points"]}</b></span><br>
+                    <span>Selected By: <b>{row["selected_by_percent"]} %</b></span>
+                    <span>Current Cost: <b>{row["now_cost"]}</b></span><br>
+                    <span>Position: <b>{row["position"]}</b></span>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
