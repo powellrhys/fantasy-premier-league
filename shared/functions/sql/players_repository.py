@@ -1,8 +1,9 @@
 # Import dependencies
 from .database_connector import DatabaseConnector
 from database.models import PlayerOverview
+from sqlalchemy import text
 import pandas as pd
-
+import time
 
 class PlayerRepository:
     """
@@ -45,20 +46,28 @@ class PlayerRepository:
         query = "SELECT * FROM player_overview"
         return pd.read_sql(query, self.engine)
 
-    def insert_players_orm(self, df: pd.DataFrame) -> None:
+    def replace_players_with_timestamp(self, df: pd.DataFrame) -> None:
         """
-        Inserts player overview data using SQLAlchemy ORM for finer control.
-        Performs a bulk insert for improved performance.
-
-        Args:
-            df (pd.DataFrame): DataFrame containing player overview data
-                to insert into the database.
+        Safely replaces data in 'player_overview' using a versioned timestamp approach.
+        Keeps old data until the new version is fully inserted.
         """
-        # Define sql session and write data to sql table
         session = self.Session()
+        current_version = int(time.time())
+
+        # Assign the current timestamp to all rows
+        df["creation_timestamp"] = current_version
+
         try:
-            players = [PlayerOverview(**row) for row in df.to_dict('records')]
-            session.bulk_save_objects(players)
+            # Insert new data with a new version
+            session.bulk_save_objects([PlayerOverview(**row) for row in df.to_dict('records')])
             session.commit()
+
+            # Once successful, delete older versions
+            session.execute(text(f"DELETE FROM player_overview WHERE creation_timestamp < {current_version}"))
+            session.commit()
+
+        except Exception as e:
+            session.rollback()
+            raise e
         finally:
             session.close()

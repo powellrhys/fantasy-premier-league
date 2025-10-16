@@ -15,7 +15,6 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-
     env:
       RESOURCE_GROUP: powellrhys-sql-server-rg
       SQL_SERVER: powellrhys-sqlserver
