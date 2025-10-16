@@ -21,19 +21,6 @@ class PlayerRepository:
         self.engine = db_connector.get_engine()
         self.Session = db_connector.Session
 
-    def write_dataframe(self, df: pd.DataFrame, if_exists: str = "replace") -> None:
-        """
-        Writes player overview data from a pandas DataFrame to the
-        'player_overview' table.
-
-        Args:
-            df (pd.DataFrame): DataFrame containing player overview data.
-            if_exists (str, optional): Behavior when the table already exists.
-                Options: 'fail', 'replace', or 'append'. Defaults to 'replace'.
-        """
-        # Write data to sql
-        df.to_sql(name="player_overview", con=self.engine, if_exists=if_exists, index=False)
-
     def read_dataframe(self) -> pd.DataFrame:
         """
         Reads all player overview data from the database into a pandas DataFrame.

@@ -1,5 +1,5 @@
 # Import dependencies
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, BigInteger
 from .base import Base
 
 class LeagueOverview(Base):
@@ -20,9 +20,11 @@ class LeagueOverview(Base):
     triple_c = Column(Boolean)
     wildcard = Column(Boolean)
     league_name = Column(String(150))
+    creation_timestamp = Column(BigInteger)
 
     def __repr__(self):
         return (
             f"<LeagueOverview(id={self.id}, player_name='{self.player_name}', "
-            f"league_name='{self.league_name}', league_rank={self.league_rank})>"
+            f"league_name='{self.league_name}', league_rank={self.league_rank}, "
+            f"version={self.creation_timestamp})>"
         )

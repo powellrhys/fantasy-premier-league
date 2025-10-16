@@ -45,17 +45,17 @@ class FPLScrapper():
         self.player_repository.append_new_data_to_database(df=player_df)
         self.logger.info("Player data written to sql \n")
 
-        # # Iterate through each league and collect data
-        # all_league_df = pd.DataFrame()
-        # for ind, league_id in enumerate(self.vars.league_ids, start=1):
+        # Iterate through each league and collect data
+        all_league_df = pd.DataFrame()
+        for ind, league_id in enumerate(self.vars.league_ids, start=1):
 
-        #     # Collect league data
-        #     self.logger.info(f"{ind}/{len(self.vars.league_ids)} - Collecting managerial "
-        #                      f"league data for league id: {league_id}...")
-        #     league_df = League(league_id=league_id).collect_league_data()
-        #     all_league_df = pd.concat([all_league_df, league_df], ignore_index=True)
+            # Collect league data
+            self.logger.info(f"{ind}/{len(self.vars.league_ids)} - Collecting managerial "
+                             f"league data for league id: {league_id}...")
+            league_df = League(league_id=league_id).collect_league_data()
+            all_league_df = pd.concat([all_league_df, league_df], ignore_index=True)
 
-        # # Export league data
-        # self.logger.info("Writing managerial league data to database...")
-        # self.league_repository.write_dataframe(df=all_league_df)
-        # self.logger.info("Managerial League data written to sql \n")
+        # Export league data
+        self.logger.info("Writing managerial league data to database...")
+        self.league_repository.append_new_data_to_database(df=all_league_df)
+        self.logger.info("Managerial League data written to sql \n")

@@ -2,7 +2,7 @@ USE [fantasy-premier-league];
 GO
 
 CREATE TABLE league_overview (
-    id INT PRIMARY KEY,
+    id INT IDENTITY(1,1) PRIMARY KEY,
     event_total INT,
     player_name VARCHAR(100),
     league_rank INT,
