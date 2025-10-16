@@ -18,7 +18,7 @@ jobs:
       RESOURCE_GROUP: powellrhys-sql-server-rg
       SQL_SERVER: powellrhys-sqlserver
       FIREWALL_RULE_NAME: update-data-github-action-${{ github.run_id }}
-    
+
     steps:
       # Check out codebase
       - name: Checkout code
@@ -42,15 +42,15 @@ jobs:
           poetry install --no-interaction --no-root
 
       # Install ODBC driver
-      - name: Install ODBC Driver
+      - name: Install SQL Server ODBC driver
         run: |
-          sudo su
-          curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-          exit
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install msodbcsql17 -y
+          sudo apt-get install unixodbc-dev -y
 
+      # Login to Azure
       - name: Azure Login
         uses: azure/login@v1
         with:
