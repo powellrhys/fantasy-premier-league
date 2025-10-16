@@ -73,6 +73,10 @@ jobs:
             --name $FIREWALL_RULE_NAME \
             --start-ip-address ${{ steps.ip.outputs.ip }} \
             --end-ip-address ${{ steps.ip.outputs.ip }}
+      
+      # Delay to ensure enough time for firewall rule to be established
+      - name: Wait for propagation
+        run: sleep 60
 
       # Run data collection script
       - name: Update Data
