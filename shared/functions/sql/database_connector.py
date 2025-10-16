@@ -9,7 +9,7 @@ class DatabaseConnector:
     Handles database connection setup and provides access to the SQLAlchemy
     engine and session factory.
     """
-    def __init__(self, source: str = "Backend") -> None:
+    def __init__(self, source: str = "backend") -> None:
         """
         Initializes the database connector by:
           - Loading environment variables.
