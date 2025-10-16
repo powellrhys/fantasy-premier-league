@@ -21,8 +21,6 @@ class Variables:
             # Collect database connecting string from environmental variables
             self.database_connection_string = os.getenv('database_connection_string')
 
-            print(self.database_connection_string)
-
             # Collect league ids for backend scrapping
             league_ids_str = os.getenv("league_ids", "")
             self.league_ids = [int(id) for id in league_ids_str.split(", ")] if league_ids_str else []
