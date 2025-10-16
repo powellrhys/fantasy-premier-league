@@ -2,12 +2,12 @@ USE [fantasy-premier-league]
 GO
 
 CREATE TABLE player_overview (
-    id INT PRIMARY KEY,
+    id INT IDENTITY(1,1) PRIMARY KEY,
     second_name VARCHAR(100),
     team VARCHAR(100),
     element_type VARCHAR(50),
     selected_by_percent DECIMAL(5,2),
-    now_cost INTEGER,
+    now_cost DECIMAL(4,1),
     minutes INTEGER,
     transfers_in INTEGER,
     value_season DECIMAL(6,2),

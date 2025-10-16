@@ -1,7 +1,9 @@
 # Import dependencies
 from .database_connector import DatabaseConnector
 from database.models import LeagueOverview
+from sqlalchemy import text
 import pandas as pd
+import time
 
 class LeagueRepository:
     """
@@ -19,19 +21,6 @@ class LeagueRepository:
         self.engine = db_connector.get_engine()
         self.Session = db_connector.Session
 
-    def write_dataframe(self, df: pd.DataFrame, if_exists: str = "replace") -> None:
-        """
-        Writes league overview data from a pandas DataFrame to the
-        'league_overview' table.
-
-        Args:
-            df (pd.DataFrame): DataFrame containing league overview data.
-            if_exists (str, optional): Behavior when the table already exists.
-                Options: 'fail', 'replace', or 'append'. Defaults to 'replace'.
-        """
-        # Write data to sql
-        df.to_sql(name="league_overview", con=self.engine, if_exists=if_exists, index=False)
-
     def read_dataframe(self) -> pd.DataFrame:
         """
         Reads all league overview data from the database into a pandas DataFrame.
@@ -44,20 +33,28 @@ class LeagueRepository:
         query = "SELECT * FROM league_overview"
         return pd.read_sql(query, self.engine)
 
-    def insert_leagues_orm(self, df: pd.DataFrame) -> None:
+    def append_new_data_to_database(self, df: pd.DataFrame) -> None:
         """
-        Inserts league overview data using SQLAlchemy ORM for finer control.
-        Performs a bulk insert for improved performance.
-
-        Args:
-            df (pd.DataFrame): DataFrame containing league overview data
-                to insert into the database.
+        Safely replaces data in 'league_overview' using a versioned timestamp approach.
+        Keeps old data until the new version is fully inserted.
         """
-        # Define sql session and write data to sql table
         session = self.Session()
+        current_version = int(time.time())
+
+        # Assign the current timestamp to all rows
+        df["creation_timestamp"] = current_version
+
         try:
-            leagues = [LeagueOverview(**row) for row in df.to_dict('records')]
-            session.bulk_save_objects(leagues)
+            # Insert new data with a new version
+            session.bulk_save_objects([LeagueOverview(**row) for row in df.to_dict('records')])
             session.commit()
+
+            # Once successful, delete older versions
+            session.execute(text(f"DELETE FROM league_overview WHERE creation_timestamp < {current_version}"))
+            session.commit()
+
+        except Exception as e:
+            session.rollback()
+            raise e
         finally:
             session.close()

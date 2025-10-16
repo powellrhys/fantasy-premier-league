@@ -54,13 +54,13 @@ def render_position_analysis_page(df: pd.DataFrame, is_goalkeeper: bool = False)
     # Generate bar plot
     fig = PlotlyPlotter(
         df,
-        x='second_name',
+        x='web_name',
         y=metric.lower().replace(" ", "_"),
         text='team',
         color='team',
         color_discrete_map=team_colour_map,
         labels={
-            "second_name": "Name",
+            "web_name": "Name",
             metric.lower().replace(" ", "_"): metric.replace("_", " ").capitalize(),
             "team": "Team"
         }

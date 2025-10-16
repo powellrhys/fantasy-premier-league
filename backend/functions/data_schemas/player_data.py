@@ -1,7 +1,7 @@
 # Define player data columns
 player_data_columns = [
     'id',
-    'second_name',
+    'web_name',
     'team',
     'element_type',
     'selected_by_percent',
@@ -20,5 +20,8 @@ player_data_columns = [
     'yellow_cards',
     'red_cards',
     'saves',
-    'starts'
+    'starts',
+    'photo',
+    'in_dreamteam',
+    'defensive_contribution_per_90'
 ]

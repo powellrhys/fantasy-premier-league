@@ -4,9 +4,17 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/flyway.yml'
+      - 'database/**'
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/flyway.yml'
+      - 'database/**'
+  schedule:
+    - cron: "0 0 * * *"
 
 concurrency:
   group: flyway-migration
@@ -15,7 +23,6 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-
     env:
       RESOURCE_GROUP: powellrhys-sql-server-rg
       SQL_SERVER: powellrhys-sqlserver

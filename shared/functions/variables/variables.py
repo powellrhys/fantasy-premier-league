@@ -17,18 +17,17 @@ class Variables:
                                     otherwise loads from Streamlit secrets. Defaults to "backend".
         """
         load_dotenv()
-        # Shared variables
         if source == "backend":
+            # Collect database connection string from environmental variables
             self.database_connection_string = os.getenv('database_connection_string')
+
+            # Collect league ids for backend scrapping
+            league_ids_str = os.getenv("league_ids", "")
+            self.league_ids = [int(id) for id in league_ids_str.split(", ")] if league_ids_str else []
         else:
+            # Collect project secrets from secrets.toml file
             self.database_connection_string = st.secrets["general"]["database_connection_string"]
-
-        # Fantasy Premier League variables
-        league_ids_str = os.getenv("league_ids", "")
-        self.league_ids = [int(id) for id in league_ids_str.split(", ")] if league_ids_str else []
-
-        # Privileged Users
-        self.privileged_users = [str(id) for id in st.secrets["general"]["privileged_users"].split(", ")]
+            self.privileged_users = [str(id) for id in st.secrets["general"]["privileged_users"].split(", ")]
 
     def __getitem__(self, key):
         """
