@@ -96,7 +96,7 @@ jobs:
         env:
           league_ids: ${{ vars.LEAGUE_IDS }}
           privileged_users: ${{ secrets.PRIVILEGED_USERS }}
-          database_connection_string: ${{ secrets.SQL_SERVER_JDBC_URL }}
+          database_connection_string: ${{ secrets.DATABASE_CONNECTION_STRING }}
         run: poetry run python -m backend.collect_fpl_data
 
       # Always remove the firewall rule (even if migration fails)
