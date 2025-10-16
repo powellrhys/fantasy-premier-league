@@ -5,7 +5,7 @@ from .base import Base
 class PlayerOverview(Base):
     __tablename__ = "player_overview"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     web_name = Column(String(100))
     team = Column(String(100))
     element_type = Column(String(50))

@@ -2,7 +2,7 @@ USE [fantasy-premier-league]
 GO
 
 CREATE TABLE player_overview (
-    id INT PRIMARY KEY,
+    id INT IDENTITY(1,1) PRIMARY KEY,
     second_name VARCHAR(100),
     team VARCHAR(100),
     element_type VARCHAR(50),

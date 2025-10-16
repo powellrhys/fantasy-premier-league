@@ -46,7 +46,7 @@ class PlayerRepository:
         query = "SELECT * FROM player_overview"
         return pd.read_sql(query, self.engine)
 
-    def replace_players_with_timestamp(self, df: pd.DataFrame) -> None:
+    def append_new_data_to_database(self, df: pd.DataFrame) -> None:
         """
         Safely replaces data in 'player_overview' using a versioned timestamp approach.
         Keeps old data until the new version is fully inserted.
