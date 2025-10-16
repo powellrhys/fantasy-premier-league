@@ -31,6 +31,7 @@ class League:
         full_df['league_name'] = data['league']['name']
         full_df.rename(columns={'rank': 'league_rank'}, inplace=True)
 
+        # Remove id column
         full_df = full_df.drop(["id"], axis=1)
 
         return full_df
