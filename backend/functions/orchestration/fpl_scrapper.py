@@ -1,12 +1,13 @@
 # Import dependencies
-from shared.functions import BlobStorage, Variables
+from shared.functions.sql import DatabaseConnector, PlayerRepository, LeagueRepository
 from ..data import GameWeek, PlayerData, League
+from shared.functions import Variables
 from ..logging import configure_logging
 import pandas as pd
 
-class FPLScrapper(BlobStorage):
+class FPLScrapper():
     """
-    A class to run the Fantasy Premier League data scraping workflow and store results in blob storage.
+    A class to run the Fantasy Premier League data scraping workflow and store results in a database.
     """
 
     def __init__(self) -> None:
@@ -15,6 +16,9 @@ class FPLScrapper(BlobStorage):
         """
         self.logger = configure_logging()
         self.vars = Variables()
+        db_connector = DatabaseConnector()
+        self.player_repository = PlayerRepository(db_connector=db_connector)
+        self.league_repository = LeagueRepository(db_connector=db_connector)
 
     def run(self) -> None:
         """
@@ -37,10 +41,9 @@ class FPLScrapper(BlobStorage):
         player_df = PlayerData().get_player_dataframe()
         self.logger.info(f'Data collected for {len(player_df)} players \n')
 
-        # Export data
-        self.logger.info('Writing player data to blob storage...')
-        self.upload_dataframe(df=player_df, file_name='player_data.csv')
-        self.logger.info('Player data written to blob storage \n')
+        self.logger.info("Writing player data to database...")
+        self.player_repository.write_dataframe(df=player_df)
+        self.logger.info("Player data written to sql \n")
 
         # Iterate through each league and collect data
         all_league_df = pd.DataFrame()
@@ -53,6 +56,6 @@ class FPLScrapper(BlobStorage):
             all_league_df = pd.concat([all_league_df, league_df], ignore_index=True)
 
         # Export league data
-        self.logger.info('Writing managerial league data to blob storage...')
-        self.upload_dataframe(df=all_league_df, file_name='leagues_data.csv')
-        self.logger.info('Managerial league data written to blob storage \n')
+        self.logger.info("Writing managerial league data to database...")
+        self.league_repository.write_dataframe(df=all_league_df)
+        self.logger.info("Managerial League data written to sql \n")

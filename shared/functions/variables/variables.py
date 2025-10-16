@@ -1,5 +1,4 @@
 # Import dependencies
-from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
 import streamlit as st
 import os
@@ -20,11 +19,9 @@ class Variables:
         load_dotenv()
         # Shared variables
         if source == "backend":
-            self.blob_connection_string = os.getenv('blob_connection_string')
-            self.container_name = 'fantasy-premier-league'
-            self.blob_service_client = BlobServiceClient.from_connection_string(self.blob_connection_string)
+            self.database_connection_string = os.getenv('database_connection_string')
         else:
-            self.blob_storage_connection_string = st.secrets["general"]["blob_storage_connection_string"]
+            self.database_connection_string = st.secrets["general"]["database_connection_string"]
 
         # Fantasy Premier League variables
         league_ids_str = os.getenv("league_ids", "")

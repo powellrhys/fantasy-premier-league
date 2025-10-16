@@ -1,6 +1,7 @@
 USE [fantasy-premier-league]
+GO
 
-CREATE TABLE player (
+CREATE TABLE player_overview (
     id INT PRIMARY KEY,
     second_name VARCHAR(100),
     team VARCHAR(100),
@@ -24,3 +25,5 @@ CREATE TABLE player (
     starts INTEGER,
     position VARCHAR(50)
 );
+
+GO

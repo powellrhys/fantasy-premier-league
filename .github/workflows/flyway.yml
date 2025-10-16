@@ -7,28 +7,31 @@ on:
   push:
     branches:
       - main
-      - feature/*
+
+concurrency:
+  group: flyway-migration
+  cancel-in-progress: false
 
 jobs:
   migrate:
     runs-on: ubuntu-latest
 
     env:
-      RESOURCE_GROUP: powellrhys-sql-server-rg          # ⬅️ Update
-      SQL_SERVER: powellrhys-sqlserver          # ⬅️ Update (without .database.windows.net)
-      FIREWALL_RULE_NAME: github-actions-${{ github.run_id }}  # unique per run
+      RESOURCE_GROUP: powellrhys-sql-server-rg
+      SQL_SERVER: powellrhys-sqlserver
+      FIREWALL_RULE_NAME: github-actions-${{ github.run_id }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1️⃣ Login to Azure using the service principal JSON
+      # Login to Azure using the service principal JSON
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # 2️⃣ Get runner's public IP address
+      # Get runner's public IP address
       - name: Get GitHub Runner Public IP
         id: ip
         run: |
@@ -36,7 +39,7 @@ jobs:
           echo "Runner IP: $IP"
           echo "ip=$IP" >> $GITHUB_OUTPUT
 
-      # 3️⃣ Add temporary firewall rule for this IP
+      # Add temporary firewall rule for this IP
       - name: Add Azure SQL Firewall Rule
         run: |
           az sql server firewall-rule create \
@@ -46,7 +49,7 @@ jobs:
             --start-ip-address ${{ steps.ip.outputs.ip }} \
             --end-ip-address ${{ steps.ip.outputs.ip }}
 
-      # 4️⃣ Run Flyway migrations
+      # Run Flyway migrations
       - name: Run Flyway migrations
         uses: docker://flyway/flyway:latest
         with:
@@ -54,11 +57,11 @@ jobs:
             -url=${{ secrets.SQL_SERVER_JDBC_URL }}
             -user=${{ secrets.SQL_SERVER_USERNAME }}
             -password=${{ secrets.SQL_SERVER_PASSWORD }}
-            -locations=filesystem:./sql
+            -locations=filesystem:./database/flyway
             -connectRetries=10
             migrate
 
-      # 5️⃣ Always remove the firewall rule (even if migration fails)
+      # Always remove the firewall rule (even if migration fails)
       - name: Remove Azure SQL Firewall Rule
         if: always()
         run: |
