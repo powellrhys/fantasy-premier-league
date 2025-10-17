@@ -4,6 +4,14 @@ import pandas as pd
 
 def render_home_page(df: pd.DataFrame) -> None:
     """
+    Render the Fantasy Premier League dashboard home page.
+
+    Displays an overview of the FPL Insights application and the current 
+    Dream Team, including player photos, stats, and key performance metrics.
+    
+    Args:
+        df (pd.DataFrame): DataFrame containing player data from the 
+            Fantasy Premier League API.
     """
     # Render page title
     st.title("Fantasy Premier League Dashboard")
