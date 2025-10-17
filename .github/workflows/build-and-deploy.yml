@@ -52,7 +52,7 @@ jobs:
     secrets:
       docker_password: ${{ secrets.docker_password }}
     with:
-      image_name: powellrhys/fantasy-premier-league-frontend
+      image_name: fantasy-premier-league-frontend
       docker_file_path: frontend/Dockerfile
 
   # Execute Plan
@@ -87,7 +87,7 @@ jobs:
     name: Restart App Service
     uses: powellrhys/powellrhys-iac/.github/workflows/template-restart-appservice.yml@v1.0.0
     with:
-      webapp_name: powellrhys-project-monitoring
+      webapp_name: fantasy-premier-league-frontend
       resource_group: powellrhys-app-service-plan-rg
     secrets:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
