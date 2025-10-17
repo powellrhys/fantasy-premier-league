@@ -147,3 +147,6 @@ data/*
 
 # .vscode
 .vscode
+
+# app_settings.json
+app_settings.json
