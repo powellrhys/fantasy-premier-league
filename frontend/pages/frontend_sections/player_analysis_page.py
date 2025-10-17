@@ -106,7 +106,7 @@ def render_player_analysis_page(df: pd.DataFrame) -> None:
 
     # Construct a metric position map
     metric_position_map = {
-        "Goalkeeper": ["clean_sheets", "goals_conceded", "saves", "penalties_saved", "penalties_missed"],
+        "Goalkeeper": ["clean_sheets", "goals_conceded", "saves", "penalties_saved", "assists"],
         "Defender": ["clean_sheets", "goals_conceded", "goals_scored", "assists", "yellow_cards", "red_cards",
                      "defensive_contribution_per_90"],
         "Midfielder": ["clean_sheets", "goals_conceded", "goals_scored", "assists", "yellow_cards", "red_cards",
