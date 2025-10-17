@@ -6,30 +6,43 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     STREAMLIT_CONFIG_DIR=/app/.streamlit \
     POETRY_VIRTUALENVS_CREATE=false \
-    POETRY_NO_INTERACTION=1
+    POETRY_NO_INTERACTION=1 \
+    PORT=8501
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (git needed for custom packages)
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Install system dependencies and Microsoft ODBC Driver 17 for SQL Server
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    gnupg \
+    unixodbc \
+    unixodbc-dev \
+    libgssapi-krb5-2 \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" \
+    > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
 RUN pip install --upgrade pip poetry
 
-# Copy project files
+# Copy dependency files first (better build caching)
 COPY pyproject.toml poetry.lock* /app/
-COPY frontend/entrypoint.sh /app/entrypoint.sh
+
+# Install only frontend extras and main dependencies
+RUN poetry install --only main --extras "frontend"
+
+# Copy rest of the application
 COPY . /app
+COPY frontend/entrypoint.sh /app/entrypoint.sh
 
 # Enable execution of the entrypoint script
 RUN chmod +x /app/entrypoint.sh
 
-# Install only frontend extras and core dependencies
-RUN poetry install --only main --extras "frontend"
-
 # Expose Streamlit port
-ENV PORT=8501
 EXPOSE 8501
 
 # Entrypoint

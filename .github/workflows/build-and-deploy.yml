@@ -71,7 +71,7 @@ jobs:
   apply:
     needs: ['plan']
     name: Apply
-    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@main
+    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@v1.0.0
     with:
       should_apply: 'true'
       release_environment: 'PROD'
