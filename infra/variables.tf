@@ -3,6 +3,10 @@ variable "app_service_resource_group" {
   type        = string
   description = "The name of the Azure Resource Group to use."
   default     = ""
+  validation {
+    condition     = var.app_service_resource_group != ""
+    error_message = "app_service_resource_group cannot be empty."
+  }
 }
 
 # Define application azure location
@@ -16,7 +20,6 @@ variable "location" {
 variable "docker_image_name" {
   type        = string
   description = "The name of the Docker image"
-  default     = ""
 }
 
 # Define app service app settings
