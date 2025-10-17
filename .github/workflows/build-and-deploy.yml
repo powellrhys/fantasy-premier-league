@@ -35,3 +35,11 @@ jobs:
       codecov_token: ${{ secrets.codecov_token }}
     with:
       toml_dependencies: '.[frontend,backend,testing]'
+
+  # Run BDD Tests
+  bdd:
+    name: Run BDD Tests
+    uses: powellrhys/powellrhys-iac/.github/workflows/template-run-bdd-tests.yml@v1.0.0
+    with:
+      features_path: ./tests/features/
+      toml_dependencies: '.[frontend,backend,testing]'

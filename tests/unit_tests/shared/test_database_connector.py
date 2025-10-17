@@ -4,7 +4,9 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 def test_database_connector_init_success():
-    """Test successful initialization of DatabaseConnector."""
+    """
+    Test successful initialization of DatabaseConnector.
+    """
     with patch("shared.functions.sql.database_connector.Variables") as mock_vars, \
          patch("shared.functions.sql.database_connector.create_engine") as mock_create_engine, \
          patch("shared.functions.sql.database_connector.sessionmaker") as mock_sessionmaker:
@@ -34,7 +36,9 @@ def test_database_connector_init_success():
 
 
 def test_database_connector_missing_connection_string():
-    """Test that initialization fails if database_connection_string is missing."""
+    """
+    Test that initialization fails if database_connection_string is missing.
+    """
     with patch("shared.functions.sql.database_connector.Variables") as mock_vars:
         mock_vars.return_value.database_connection_string = None
 

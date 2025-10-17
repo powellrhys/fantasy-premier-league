@@ -15,7 +15,7 @@ def test_get_json_returns_expected_data(mock_get):
     mock_response.json.return_value = fake_response
     mock_get.return_value = mock_response
 
-    # Creaye instance of client
+    # Create instance of client
     client = FPLApiClient()
     endpoint = "bootstrap-static"
 

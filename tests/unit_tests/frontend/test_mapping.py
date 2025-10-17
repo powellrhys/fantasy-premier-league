@@ -1,6 +1,5 @@
 # Import dependencies
 from frontend.functions.mapping import team_colour_map
-
 import re
 
 def test_team_colour_map_contains_expected_teams():

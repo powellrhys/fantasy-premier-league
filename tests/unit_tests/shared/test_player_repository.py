@@ -63,7 +63,7 @@ def test_append_new_data_to_database(mock_player_overview_class, sample_df):
 
     # Assert delete executed with current timestamp
     delete_call = mock_session.execute.call_args[0][0].text \
-        if hasattr(mock_session.execute.call_args[0][0], 'text')else str(mock_session.execute.call_args[0][0])
+        if hasattr(mock_session.execute.call_args[0][0], 'text') else str(mock_session.execute.call_args[0][0])
 
     assert "DELETE FROM player_overview" in delete_call
 
