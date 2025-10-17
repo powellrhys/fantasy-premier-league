@@ -29,18 +29,15 @@ RUN apt-get update && apt-get install -y \
 # Install Poetry
 RUN pip install --upgrade pip poetry
 
-# Copy dependency files first (better build caching)
-COPY pyproject.toml poetry.lock* /app/
-
-# Install only frontend extras and main dependencies
-RUN poetry install --only main --extras "frontend"
-
-# Copy rest of the application
+# --- COPY ALL PROJECT FILES before installing dependencies ---
 COPY . /app
 COPY frontend/entrypoint.sh /app/entrypoint.sh
 
 # Enable execution of the entrypoint script
 RUN chmod +x /app/entrypoint.sh
+
+# Install dependencies (frontend + main)
+RUN poetry install --only main --extras "frontend"
 
 # Expose Streamlit port
 EXPOSE 8501
