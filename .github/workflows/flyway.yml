@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   call-flyway:
+    name: Flyway
     uses: powellrhys/powellrhys-iac/.github/workflows/template-migrate-flyway.yml@feature/flyway
     with:
       resource_group: powellrhys-sql-server-rg
