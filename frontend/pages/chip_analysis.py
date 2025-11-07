@@ -1,8 +1,8 @@
 # Import python and project dependencies
 from pages.frontend_sections.chip_analysis_page import render_chip_analysis_page
+from functions.data import collect_managerial_league_data, wake_up_database
 from streamlit_components.ui_components import configure_page_config
 from shared.functions import Variables
-from functions.data import collect_managerial_league_data
 import streamlit as st
 
 # Set page config
@@ -18,11 +18,14 @@ st.title("Chip Analysis")
 # If user logged in, render streamlit content
 if st.user.is_logged_in and st.user["name"] in Variables(source="frontend").privileged_users:
 
-    # Read in leagues_data from external source
-    leagues_df = collect_managerial_league_data()
+    # Ensure database is online
+    if wake_up_database():
 
-    # Render chip analysis section
-    render_chip_analysis_page(leagues_df=leagues_df)
+        # Read in leagues_data from external source
+        leagues_df = collect_managerial_league_data()
+
+        # Render chip analysis section
+        render_chip_analysis_page(leagues_df=leagues_df)
 
 else:
     # Handle unauthenticated user
