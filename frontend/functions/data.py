@@ -39,7 +39,7 @@ def wake_up_database() -> bool:
     # If we reach here, all attempts failed, remove last info message and log error
     placeholder.empty()
     st.error("SQL Server Offline - Try again later")
-    return False    
+    return False
 
 
 @st.cache_data(ttl=3600)
