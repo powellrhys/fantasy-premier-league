@@ -59,7 +59,7 @@ jobs:
   plan:
     name: Plan
     needs: ['build-application']
-    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@v1.0.2
+    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@feature/vars_plan_fix
     with:
       tf_directory: 'infra'
       tf_vars_file_name: 'values.tfvars'
@@ -72,7 +72,7 @@ jobs:
     needs: ['plan']
     if: needs.plan.outputs.has_changes == 'true'
     name: Apply
-    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@v1.0.2
+    uses: powellrhys/powellrhys-iac/.github/workflows/template-plan-apply-terraform.yml@feature/vars_plan_fix
     with:
       should_apply: 'true'
       release_environment: 'PROD'
