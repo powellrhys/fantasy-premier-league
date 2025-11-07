@@ -85,6 +85,7 @@ jobs:
   # Restart App Service
   restart-appservice:
     needs: ['apply']
+    if: always() && (needs.apply.result == 'success' || needs.apply.result == 'skipped')
     name: Restart App Service
     uses: powellrhys/powellrhys-iac/.github/workflows/template-restart-appservice.yml@v1.0.2
     with:
