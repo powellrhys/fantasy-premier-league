@@ -13,8 +13,6 @@ on:
     paths:
       - '.github/workflows/flyway.yml'
       - 'database/**'
-  schedule:
-    - cron: "0 0 * * *"
 
 concurrency:
   group: flyway-migration
